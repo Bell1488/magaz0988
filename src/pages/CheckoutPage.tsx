@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CreditCard, Truck, MapPin, Phone, Mail, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export default function CheckoutPage() {
   const { state } = useCart();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,10 +25,45 @@ export default function CheckoutPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle order submission
-    alert('Заказ успешно оформлен! Мы свяжемся с вами в ближайшее время.');
+    
+    try {
+      // Формируем данные заказа
+      const orderData = {
+        ...formData,
+        items: state.items.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        total: state.total,
+        date: new Date().toISOString(),
+        status: 'pending'
+      };
+      
+      // Отправляем заказ на сервер
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+      
+      if (response.ok) {
+        // Переходим на страницу подтверждения заказа
+        navigate('/order-confirmation', { state: { orderData } });
+      } else {
+        const errorText = await response.text();
+        console.error('Error submitting order:', errorText);
+        alert('Error al procesar el pedido. Por favor, inténtelo de nuevo más tarde.');
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      alert('Error al procesar el pedido. Por favor, inténtelo de nuevo más tarde.');
+    }
   };
 
   return (
