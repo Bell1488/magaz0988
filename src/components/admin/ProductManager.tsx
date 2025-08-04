@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, Save, X, Search } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Pencil, Trash2, Save, X, Search, Upload } from 'lucide-react';
 import { api } from '../../utils/api';
 
 // Типы для продуктов
@@ -65,6 +65,9 @@ export default function ProductManager() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAdding, setIsAdding] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [specifications, setSpecifications] = useState<{key: string, value: string}[]>([]);
   
   // Новый продукт по умолчанию
   const defaultNewProduct: Product = {
@@ -109,12 +112,20 @@ export default function ProductManager() {
   
   // Обработчики событий
   const handleAddNew = () => {
-    setEditingProduct({ ...defaultNewProduct, id: `prod-${Date.now()}` });
+    setEditingProduct({...defaultNewProduct});
+    setSpecifications([]);
     setIsAdding(true);
   };
   
   const handleEdit = (product: Product) => {
-    setEditingProduct({ ...product });
+    setEditingProduct({...product});
+    
+    // Преобразуем спецификации из объекта в массив пар ключ-значение
+    const specs = product.specifications ? 
+      Object.entries(product.specifications).map(([key, value]) => ({ key, value })) : 
+      [];
+    setSpecifications(specs);
+    
     setIsAdding(false);
   };
   
@@ -134,6 +145,14 @@ export default function ProductManager() {
     if (!editingProduct) return;
     
     try {
+      // Преобразуем спецификации из массива пар ключ-значение в объект
+      const specsObject: Record<string, string> = {};
+      specifications.forEach(spec => {
+        if (spec.key && spec.value) {
+          specsObject[spec.key] = spec.value;
+        }
+      });
+      
       // Подготовка данных перед сохранением
       const productToSave = {
         ...editingProduct,
@@ -143,7 +162,9 @@ export default function ProductManager() {
         rating: editingProduct.rating ? parseFloat(editingProduct.rating as any) : 5,
         reviews: editingProduct.reviews ? parseInt(editingProduct.reviews as any) : 0,
         // Убедимся, что у нас есть массив изображений
-        images: editingProduct.images || [editingProduct.image]
+        images: editingProduct.images || [editingProduct.image],
+        // Добавляем спецификации
+        specifications: specsObject
       };
       
       let savedProduct;
@@ -169,6 +190,7 @@ export default function ProductManager() {
   const handleCancel = () => {
     setEditingProduct(null);
     setIsAdding(false);
+    setSpecifications([]);
   };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -185,6 +207,72 @@ export default function ProductManager() {
     } else {
       setEditingProduct({ ...editingProduct, [name]: value });
     }
+  };
+
+  // Обработчик загрузки изображения
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0 || !editingProduct) return;
+    
+    try {
+      setIsUploading(true);
+      
+      const formData = new FormData();
+      formData.append('image', files[0]);
+      
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products/upload-image`, {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error uploading image');
+      }
+      
+      const data = await response.json();
+      const imageUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${data.url}`;
+      
+      // Если это первое изображение, устанавливаем его как основное
+      if (!editingProduct.image) {
+        setEditingProduct({ ...editingProduct, image: imageUrl });
+      } else {
+        // Иначе добавляем в массив изображений
+        const newImages = [...(editingProduct.images || [editingProduct.image])];
+        if (!newImages.includes(imageUrl)) {
+          newImages.push(imageUrl);
+          setEditingProduct({ ...editingProduct, images: newImages });
+        }
+      }
+      
+      // Очищаем input для возможности повторной загрузки того же файла
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error al subir la imagen');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+  
+  // Обработчик добавления спецификации
+  const handleAddSpecification = () => {
+    setSpecifications([...specifications, { key: '', value: '' }]);
+  };
+  
+  // Обработчик изменения спецификации
+  const handleSpecificationChange = (index: number, field: 'key' | 'value', value: string) => {
+    const newSpecs = [...specifications];
+    newSpecs[index][field] = value;
+    setSpecifications(newSpecs);
+  };
+  
+  // Обработчик удаления спецификации
+  const handleRemoveSpecification = (index: number) => {
+    const newSpecs = [...specifications];
+    newSpecs.splice(index, 1);
+    setSpecifications(newSpecs);
   };
 
   return (
@@ -245,7 +333,6 @@ export default function ProductManager() {
                 value={editingProduct.name}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
               />
             </div>
             
@@ -271,13 +358,10 @@ export default function ProductManager() {
                 value={editingProduct.category}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
               >
                 <option value="">Выберите категорию</option>
                 {categories.map(category => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
+                  <option key={category.id} value={category.id}>{category.name}</option>
                 ))}
               </select>
             </div>
@@ -294,7 +378,6 @@ export default function ProductManager() {
                 min="0"
                 step="0.01"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
               />
             </div>
             
@@ -317,37 +400,38 @@ export default function ProductManager() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 URL основного изображения
               </label>
-              <input
-                type="text"
-                name="image"
-                value={editingProduct.image}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  name="image"
+                  value={editingProduct.image}
+                  onChange={handleChange}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                  disabled={isUploading}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {isUploading ? 'Загрузка...' : 'Загрузить'}
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
               <p className="text-xs text-gray-500 mt-1">Это изображение будет использоваться в каталоге и как первое в галерее товара</p>
             </div>
             
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                URL дополнительных изображений
+                Галерея изображений
               </label>
-              <input
-                type="text"
-                name="additionalImage"
-                placeholder="Введите URL и нажмите Enter для добавления"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && e.currentTarget.value) {
-                    e.preventDefault();
-                    const newImages = [...(editingProduct.images || [editingProduct.image])];
-                    if (!newImages.includes(e.currentTarget.value)) {
-                      newImages.push(e.currentTarget.value);
-                      setEditingProduct({...editingProduct, images: newImages});
-                    }
-                    e.currentTarget.value = '';
-                  }
-                }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
               <div className="mt-2 flex flex-wrap gap-2">
                 {editingProduct.images && editingProduct.images.map((img, index) => (
                   <div key={index} className="relative group">
@@ -364,6 +448,13 @@ export default function ProductManager() {
                     </button>
                   </div>
                 ))}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="h-16 w-16 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:text-blue-600 hover:border-blue-500 transition-colors"
+                >
+                  <Plus className="h-6 w-6" />
+                </button>
               </div>
             </div>
             
@@ -421,6 +512,48 @@ export default function ProductManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+            </div>
+            
+            <div className="md:col-span-2">
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Спецификации
+                </label>
+                <button
+                  type="button"
+                  onClick={handleAddSpecification}
+                  className="text-blue-600 hover:text-blue-800 text-sm flex items-center"
+                >
+                  <Plus className="h-3 w-3 mr-1" />
+                  Добавить спецификацию
+                </button>
+              </div>
+              
+              {specifications.map((spec, index) => (
+                <div key={index} className="flex space-x-2 mb-2">
+                  <input
+                    type="text"
+                    value={spec.key}
+                    onChange={(e) => handleSpecificationChange(index, 'key', e.target.value)}
+                    placeholder="Характеристика"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <input
+                    type="text"
+                    value={spec.value}
+                    onChange={(e) => handleSpecificationChange(index, 'value', e.target.value)}
+                    placeholder="Значение"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSpecification(index)}
+                    className="px-2 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+              ))}
             </div>
             
             <div>
@@ -544,8 +677,8 @@ export default function ProductManager() {
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
-                  Товары не найдены
+                <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                  Нет товаров, соответствующих критериям поиска
                 </td>
               </tr>
             )}

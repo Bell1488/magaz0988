@@ -187,6 +187,38 @@ app.get('/api/products/:id', (req, res) => {
   }
 });
 
+// Настройка загрузки изображений товаров
+const productImageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const productImagesDir = path.join(uploadsDir, 'products');
+    if (!fs.existsSync(productImagesDir)) {
+      fs.mkdirSync(productImagesDir, { recursive: true });
+    }
+    cb(null, productImagesDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, 'product-' + uniqueSuffix + ext);
+  }
+});
+
+const uploadProductImage = multer({ 
+  storage: productImageStorage,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
+
+// Загрузка изображения товара
+app.post('/api/products/upload-image', uploadProductImage.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded');
+  }
+  
+  // Возвращаем URL загруженного файла
+  const imageUrl = `/uploads/products/${req.file.filename}`;
+  res.json({ url: imageUrl });
+});
+
 app.post('/api/products', (req, res) => {
   const products = readData(productsFile) || initialProducts;
   const newProduct = req.body;

@@ -773,7 +773,8 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+              <div className="text-sm text-gray-500 mb-4">ID: {product.id}</div>
 
               <div className="flex items-center mb-6">
                 <div className="flex items-center">

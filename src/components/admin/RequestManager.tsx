@@ -175,7 +175,7 @@ export default function RequestManager() {
                       <h3 className="text-sm font-medium text-gray-500 mb-1">Файл прошивки</h3>
                       <div className="flex items-center">
                         <a 
-                          href={request.fileUrl} 
+                          href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${request.fileUrl}`} 
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center text-blue-600 hover:underline"
