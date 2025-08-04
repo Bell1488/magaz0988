@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import SearchResults from '../components/SearchResults';
 import { Grid, List, Filter } from 'lucide-react';
 
 // Начальные данные для категорий (будут использоваться, если API недоступен)
@@ -162,7 +161,16 @@ export default function CatalogPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         ) : searchQuery ? (
-          <SearchResults query={searchQuery} />
+          <div className="text-center py-16">
+            <p className="text-xl text-gray-600">Resultados de búsqueda para: "{searchQuery}"</p>
+            <p className="text-gray-500 mt-2">Función de búsqueda en desarrollo</p>
+            <Link
+              to="/catalog"
+              className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Volver al catálogo
+            </Link>
+          </div>
         ) : (
           /* Categories Grid */
           <div className={`grid gap-6 ${

@@ -538,6 +538,7 @@ export default function CategoryPage() {
             </div>
           ))}
         </div>
+        )}
         
         {filteredProducts.length === 0 && (
           <div className="text-center py-16">
