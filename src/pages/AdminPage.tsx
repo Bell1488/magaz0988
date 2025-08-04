@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/admin/Ta
 import ProductManager from '../components/admin/ProductManager';
 import CategoryManager from '../components/admin/CategoryManager';
 import OrderManager from '../components/admin/OrderManager';
+import RequestManager from '../components/admin/RequestManager';
 import { Lock } from 'lucide-react';
 
 // Простая аутентификация для админ-панели
@@ -100,6 +101,7 @@ export default function AdminPage() {
             <TabsTrigger value="products">Товары</TabsTrigger>
             <TabsTrigger value="categories">Категории</TabsTrigger>
             <TabsTrigger value="orders">Заказы</TabsTrigger>
+            <TabsTrigger value="requests">Заявки</TabsTrigger>
           </TabsList>
           
           <TabsContent value="products">
@@ -112,6 +114,10 @@ export default function AdminPage() {
           
           <TabsContent value="orders">
             <OrderManager />
+          </TabsContent>
+          
+          <TabsContent value="requests">
+            <RequestManager />
           </TabsContent>
         </Tabs>
       </div>

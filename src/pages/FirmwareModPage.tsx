@@ -108,20 +108,43 @@ export default function FirmwareModPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your server
-    console.log({
-      brand: selectedBrand,
-      model: selectedModel,
-      year: selectedYear,
-      engineType: selectedEngineType,
-      ecuType,
-      description,
-      file,
-      contactInfo
-    });
-    setFormSubmitted(true);
+    
+    try {
+      // Создаем FormData для отправки файла
+      const formData = new FormData();
+      formData.append('carBrand', selectedBrand);
+      formData.append('carModel', selectedModel);
+      formData.append('year', selectedYear);
+      formData.append('engineType', selectedEngineType);
+      formData.append('ecuType', ecuType);
+      formData.append('description', description);
+      formData.append('customerName', contactInfo.name);
+      formData.append('customerEmail', contactInfo.email);
+      formData.append('customerPhone', contactInfo.phone);
+      
+      if (file) {
+        formData.append('file', file);
+      }
+      
+      // Отправляем данные на сервер
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`, {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        setFormSubmitted(true);
+      } else {
+        const errorText = await response.text();
+        console.error('Error submitting firmware request:', errorText);
+        alert('Error al enviar la solicitud. Por favor, inténtelo de nuevo más tarde.');
+      }
+    } catch (error) {
+      console.error('Error submitting firmware request:', error);
+      alert('Error al enviar la solicitud. Por favor, inténtelo de nuevo más tarde.');
+    }
   };
 
   if (formSubmitted) {

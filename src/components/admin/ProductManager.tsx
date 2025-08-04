@@ -11,8 +11,13 @@ interface Product {
   price: number;
   oldPrice: number | null;
   description: string;
+  fullDescription?: string;
   image: string;
+  images?: string[];
   inStock: boolean;
+  rating?: number;
+  reviews?: number;
+  specifications?: Record<string, string>;
 }
 
 // Начальные данные для демонстрации
@@ -70,8 +75,13 @@ export default function ProductManager() {
     price: 0,
     oldPrice: null,
     description: '',
+    fullDescription: '',
     image: '',
-    inStock: true
+    images: [''],
+    inStock: true,
+    rating: 5.0,
+    reviews: 0,
+    specifications: {}
   };
   
   // Загрузка продуктов при монтировании
@@ -124,15 +134,27 @@ export default function ProductManager() {
     if (!editingProduct) return;
     
     try {
+      // Подготовка данных перед сохранением
+      const productToSave = {
+        ...editingProduct,
+        // Убедимся, что числовые поля имеют правильный тип
+        price: parseFloat(editingProduct.price as any),
+        oldPrice: editingProduct.oldPrice ? parseFloat(editingProduct.oldPrice as any) : null,
+        rating: editingProduct.rating ? parseFloat(editingProduct.rating as any) : 5,
+        reviews: editingProduct.reviews ? parseInt(editingProduct.reviews as any) : 0,
+        // Убедимся, что у нас есть массив изображений
+        images: editingProduct.images || [editingProduct.image]
+      };
+      
       let savedProduct;
       
       if (isAdding) {
         // Создание нового товара
-        savedProduct = await api.create('products', editingProduct);
+        savedProduct = await api.create('products', productToSave);
         setProducts([...products, savedProduct]);
       } else {
         // Обновление существующего товара
-        savedProduct = await api.update('products', editingProduct.id, editingProduct);
+        savedProduct = await api.update('products', productToSave.id, productToSave);
         setProducts(products.map(p => p.id === savedProduct.id ? savedProduct : p));
       }
       
@@ -210,6 +232,7 @@ export default function ProductManager() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 disabled={!isAdding}
               />
+              <p className="text-xs text-gray-500 mt-1">Например: eng-005, brk-003, etc.</p>
             </div>
             
             <div>
@@ -292,7 +315,7 @@ export default function ProductManager() {
             
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                URL изображения
+                URL основного изображения
               </label>
               <input
                 type="text"
@@ -301,17 +324,101 @@ export default function ProductManager() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+              <p className="text-xs text-gray-500 mt-1">Это изображение будет использоваться в каталоге и как первое в галерее товара</p>
             </div>
             
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Описание
+                URL дополнительных изображений
+              </label>
+              <input
+                type="text"
+                name="additionalImage"
+                placeholder="Введите URL и нажмите Enter для добавления"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.currentTarget.value) {
+                    e.preventDefault();
+                    const newImages = [...(editingProduct.images || [editingProduct.image])];
+                    if (!newImages.includes(e.currentTarget.value)) {
+                      newImages.push(e.currentTarget.value);
+                      setEditingProduct({...editingProduct, images: newImages});
+                    }
+                    e.currentTarget.value = '';
+                  }
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <div className="mt-2 flex flex-wrap gap-2">
+                {editingProduct.images && editingProduct.images.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <img src={img} alt={`Image ${index}`} className="h-16 w-16 object-cover rounded" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newImages = editingProduct.images?.filter((_, i) => i !== index);
+                        setEditingProduct({...editingProduct, images: newImages});
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Краткое описание
               </label>
               <textarea
                 name="description"
                 value={editingProduct.description}
                 onChange={handleChange}
-                rows={3}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Полное описание
+              </label>
+              <textarea
+                name="fullDescription"
+                value={editingProduct.fullDescription || ''}
+                onChange={handleChange}
+                rows={4}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Рейтинг (0-5)
+              </label>
+              <input
+                type="number"
+                name="rating"
+                min="0"
+                max="5"
+                step="0.1"
+                value={editingProduct.rating || 5}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Количество отзывов
+              </label>
+              <input
+                type="number"
+                name="reviews"
+                min="0"
+                value={editingProduct.reviews || 0}
+                onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
