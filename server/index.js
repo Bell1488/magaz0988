@@ -50,63 +50,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Начальные данные для товаров
-const initialProducts = [
-  {
-    id: 'eng-001',
-    name: 'Filtro de aceite Mann W712/75',
-    brand: 'MANN-FILTER',
-    category: 'engine',
-    price: 45,
-    oldPrice: 52,
-    description: 'Filtro de aceite original para BMW, Mercedes, Audi',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
-    inStock: true
-  },
-  {
-    id: 'brk-001',
-    name: 'Pastillas de freno Brembo P50088',
-    brand: 'BREMBO',
-    category: 'brakes',
-    price: 32,
-    oldPrice: 35,
-    description: 'Pastillas de freno delanteras para conducción deportiva',
-    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800',
-    inStock: true
-  }
-];
+// Начальные данные для товаров (будут загружены из файла)
+const initialProducts = [];
 
-// Начальные данные для категорий
-const initialCategories = [
-  {
-    id: 'engine',
-    name: 'Motor y sistema de alimentación',
-    description: 'Pistones, anillos, filtros, inyectores, bombas de combustible',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 1234
-  },
-  {
-    id: 'brakes',
-    name: 'Sistema de frenos',
-    description: 'Pastillas, discos, tambores, cilindros, latiguillos',
-    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 892
-  },
-  {
-    id: 'tires',
-    name: 'Neumáticos',
-    description: 'Neumáticos de verano, invierno y todo tiempo para todo tipo de vehículos',
-    image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 425
-  },
-  {
-    id: 'adblue',
-    name: 'Componentes AdBlue y SCR',
-    description: 'Inyectores, bombas, sensores NOx y líquido AdBlue',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 178
-  }
-];
+// Начальные данные для категорий (будут загружены из файла)
+const initialCategories = [];
 
 // Начальные данные для заказов
 const initialOrders = [

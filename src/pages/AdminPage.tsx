@@ -14,6 +14,8 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('products');
+  const [newOrders, setNewOrders] = useState(0);
+  const [newRequests, setNewRequests] = useState(0);
 
   // Проверка аутентификации при загрузке страницы
   useEffect(() => {
@@ -22,6 +24,74 @@ export default function AdminPage() {
       setIsAuthenticated(true);
     }
   }, []);
+
+  // Загрузка данных о новых заказах и заявках
+  useEffect(() => {
+    const fetchNewItems = async () => {
+      if (!isAuthenticated) return;
+
+      try {
+        // Загрузка новых заказов
+        const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`);
+        if (ordersResponse.ok) {
+          const orders = await ordersResponse.json();
+          const newOrdersCount = orders.filter(order => order.status === 'pending' && !localStorage.getItem(`viewed_order_${order.id}`)).length;
+          setNewOrders(newOrdersCount);
+        }
+
+        // Загрузка новых заявок на прошивку
+        const requestsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`);
+        if (requestsResponse.ok) {
+          const requests = await requestsResponse.json();
+          const newRequestsCount = requests.filter(request => request.status === 'new' && !localStorage.getItem(`viewed_request_${request.id}`)).length;
+          setNewRequests(newRequestsCount);
+        }
+      } catch (error) {
+        console.error('Error fetching new items:', error);
+      }
+    };
+
+    fetchNewItems();
+    
+    // Обновлять каждые 30 секунд
+    const interval = setInterval(fetchNewItems, 30000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
+  // Обработчик переключения вкладки
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    
+    // Отмечаем заказы как просмотренные при переходе на вкладку заказов
+    if (value === 'orders' && newOrders > 0) {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`)
+        .then(response => response.json())
+        .then(orders => {
+          orders.forEach(order => {
+            if (order.status === 'pending') {
+              localStorage.setItem(`viewed_order_${order.id}`, 'true');
+            }
+          });
+          setNewOrders(0);
+        })
+        .catch(error => console.error('Error marking orders as viewed:', error));
+    }
+    
+    // Отмечаем заявки как просмотренные при переходе на вкладку заявок
+    if (value === 'requests' && newRequests > 0) {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`)
+        .then(response => response.json())
+        .then(requests => {
+          requests.forEach(request => {
+            if (request.status === 'new') {
+              localStorage.setItem(`viewed_request_${request.id}`, 'true');
+            }
+          });
+          setNewRequests(0);
+        })
+        .catch(error => console.error('Error marking requests as viewed:', error));
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,12 +166,26 @@ export default function AdminPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList>
             <TabsTrigger value="products">Товары</TabsTrigger>
             <TabsTrigger value="categories">Категории</TabsTrigger>
-            <TabsTrigger value="orders">Заказы</TabsTrigger>
-            <TabsTrigger value="requests">Заявки</TabsTrigger>
+            <TabsTrigger value="orders" className="relative">
+              Заказы
+              {newOrders > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {newOrders}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="requests" className="relative">
+              Заявки
+              {newRequests > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {newRequests}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="products">

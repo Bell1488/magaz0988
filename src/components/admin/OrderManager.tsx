@@ -12,13 +12,21 @@ interface OrderItem {
 interface Order {
   id: string;
   date: string;
+  firstName: string;
+  lastName: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   items: OrderItem[];
   total: number;
   status: 'pending' | 'processing' | 'completed' | 'cancelled';
-  shippingAddress: string;
+  shippingAddress?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  paymentMethod?: 'card' | 'transfer' | 'cash';
+  deliveryMethod?: 'courier' | 'pickup';
+  isNew?: boolean;
 }
 
 // Начальные данные для демонстрации
@@ -209,14 +217,42 @@ export default function OrderManager() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                     <div>
                       <h4 className="text-sm font-semibold text-gray-700 mb-2">Информация о клиенте</h4>
-                      <p className="text-sm text-gray-600">Имя: {order.customerName}</p>
+                      <p className="text-sm text-gray-600">Имя: {order.firstName || ''} {order.lastName || ''}</p>
                       <p className="text-sm text-gray-600">Email: {order.customerEmail}</p>
                       <p className="text-sm text-gray-600">Телефон: {order.customerPhone}</p>
                     </div>
                     
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Адрес доставки</h4>
-                      <p className="text-sm text-gray-600">{order.shippingAddress}</p>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Информация о доставке</h4>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-medium">Метод доставки: </span>
+                        {order.deliveryMethod === 'pickup' ? 'Самовывоз' : 'Курьер'}
+                      </p>
+                      {order.deliveryMethod !== 'pickup' && (
+                        <>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Адрес: </span>
+                            {order.address || order.shippingAddress}
+                          </p>
+                          {order.city && (
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Город: </span>
+                              {order.city}
+                            </p>
+                          )}
+                          {order.postalCode && (
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Почтовый индекс: </span>
+                              {order.postalCode}
+                            </p>
+                          )}
+                        </>
+                      )}
+                      <p className="text-sm text-gray-600 mt-2">
+                        <span className="font-medium">Метод оплаты: </span>
+                        {order.paymentMethod === 'card' ? 'Банковская карта' : 
+                         order.paymentMethod === 'transfer' ? 'Банковский перевод' : 'Наличные'}
+                      </p>
                     </div>
                   </div>
                   
