@@ -3,110 +3,23 @@ import { Link, useLocation } from 'react-router-dom';
 import { Grid, List, Filter } from 'lucide-react';
 import SearchResults from '../components/SearchResults';
 
-// Начальные данные для категорий (будут использоваться, если API недоступен)
-const initialCategories = [
-  {
-    id: 'engine',
-    name: 'Motor y sistema de alimentación',
-    description: 'Pistones, anillos, filtros, inyectores, bombas de combustible',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 1234
-  },
-  {
-    id: 'brakes',
-    name: 'Sistema de frenos',
-    description: 'Pastillas, discos, tambores, cilindros, latiguillos',
-    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 892
-  },
-  {
-    id: 'suspension',
-    name: 'Suspensión y dirección',
-    description: 'Amortiguadores, muelles, rótulas, brazos',
-    image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 756
-  },
-  {
-    id: 'electrical',
-    name: 'Sistema eléctrico',
-    description: 'Baterías, alternadores, motores de arranque, bujías',
-    image: 'https://images.pexels.com/photos/2244746/pexels-photo-2244746.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 623
-  },
-  {
-    id: 'body',
-    name: 'Carrocería',
-    description: 'Paragolpes, aletas, capós, puertas, faros',
-    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 445
-  },
-  {
-    id: 'interior',
-    name: 'Interior y confort',
-    description: 'Asientos, tapicería, climatización, sistemas de audio',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 334
-  },
-  {
-    id: 'consumables',
-    name: 'Consumibles',
-    description: 'Aceites, líquidos, filtros, correas, escobillas',
-    image: 'https://images.pexels.com/photos/2244746/pexels-photo-2244746.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 567
-  },
-  {
-    id: 'tools',
-    name: 'Herramientas y equipos',
-    description: 'Llaves, extractores, gatos, compresores',
-    image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 289
-  },
-  {
-    id: 'tires',
-    name: 'Neumáticos',
-    description: 'Neumáticos de verano, invierno y todo tiempo para todo tipo de vehículos',
-    image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 425
-  },
-  {
-    id: 'adblue',
-    name: 'Componentes AdBlue y SCR',
-    description: 'Inyectores, bombas, sensores NOx y líquido AdBlue',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400',
-    count: 178
-  }
-];
-
 export default function CatalogPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const location = useLocation();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categories, setCategories] = useState(initialCategories);
+  const searchQuery = new URLSearchParams(location.search).get('search') || '';
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Загрузка категорий с сервера
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories`);
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
-        } else {
-          console.error('Error fetching categories:', await response.text());
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-        // Используем начальные данные в случае ошибки
-        setCategories(initialCategories);
-      } finally {
+    setLoading(true);
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories`)
+      .then(res => res.json())
+      .then(data => {
+        setCategories(data);
         setLoading(false);
-      }
-    };
-    
-    fetchCategories();
+      })
+      .catch(() => setLoading(false));
   }, []);
   
   useEffect(() => {

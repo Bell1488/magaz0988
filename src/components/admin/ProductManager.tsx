@@ -20,32 +20,6 @@ interface Product {
   specifications?: Record<string, string>;
 }
 
-// Начальные данные для демонстрации
-const initialProducts: Product[] = [
-  {
-    id: 'eng-001',
-    name: 'Filtro de aceite Mann W712/75',
-    brand: 'MANN-FILTER',
-    category: 'engine',
-    price: 45,
-    oldPrice: 52,
-    description: 'Filtro de aceite original para BMW, Mercedes, Audi',
-    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
-    inStock: true
-  },
-  {
-    id: 'brk-001',
-    name: 'Pastillas de freno Brembo P50088',
-    brand: 'BREMBO',
-    category: 'brakes',
-    price: 32,
-    oldPrice: 35,
-    description: 'Pastillas de freno delanteras para conducción deportiva',
-    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800',
-    inStock: true
-  }
-];
-
 // Категории для выпадающего списка
 const categories = [
   { id: 'engine', name: 'Motor y sistema de alimentación' },
@@ -94,9 +68,7 @@ export default function ProductManager() {
         const data = await api.getAll('products');
         setProducts(data);
       } catch (error) {
-        console.error('Error fetching products:', error);
-        // Используем начальные данные в случае ошибки
-        setProducts(initialProducts);
+        setProducts([]);
       }
     };
     
