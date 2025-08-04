@@ -654,7 +654,7 @@ export default function ProductPage() {
       </div>
     );
   }
-  
+
   if (!product) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -683,7 +683,7 @@ export default function ProductPage() {
           id: product.id,
           name: product.name,
           price: product.price,
-          image: product.images[0],
+          image: product.images && product.images.length > 0 ? product.images[0] : product.image,
           brand: product.brand
         }
       });
@@ -722,13 +722,14 @@ export default function ProductPage() {
           <div>
             <div className="bg-white rounded-lg p-8 mb-4">
               <img
-                src={product.images[activeImage]}
+                src={product.images && product.images.length > 0 ? product.images[activeImage] : product.image}
                 alt={product.name}
                 className="w-full h-96 object-cover rounded-lg"
               />
             </div>
             <div className="flex space-x-4">
-              {product.images.map((image, index) => (
+              {product.images && product.images.length > 0 ? (
+                product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveImage(index)}
@@ -742,7 +743,18 @@ export default function ProductPage() {
                     className="w-full h-full object-cover"
                   />
                 </button>
-              ))}
+                ))
+              ) : (
+                <button
+                  className="w-20 h-20 rounded-lg overflow-hidden border-2 border-blue-600"
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              )}
             </div>
           </div>
 
@@ -769,15 +781,15 @@ export default function ProductPage() {
                     <Star
                       key={i}
                       className={`h-5 w-5 ${
-                        i < Math.floor(product.rating)
+                        product.rating && i < Math.floor(product.rating)
                           ? 'text-yellow-400 fill-current'
                           : 'text-gray-300'
                       }`}
                     />
                   ))}
                 </div>
-                <span className="text-lg text-gray-600 ml-2">{product.rating}</span>
-                <span className="text-gray-400 ml-2">({product.reviews} reseñas)</span>
+                <span className="text-lg text-gray-600 ml-2">{product.rating || 5.0}</span>
+                <span className="text-gray-400 ml-2">({product.reviews || 0} reseñas)</span>
               </div>
 
               <div className="flex items-center space-x-4 mb-8">
@@ -796,7 +808,7 @@ export default function ProductPage() {
                 )}
               </div>
 
-              <p className="text-gray-700 mb-8">{product.fullDescription}</p>
+              <p className="text-gray-700 mb-8">{product.fullDescription || product.description}</p>
 
               {/* Quantity and Add to Cart */}
               <div className="flex items-center space-x-4 mb-8">
@@ -856,12 +868,18 @@ export default function ProductPage() {
             <div className="bg-white rounded-lg p-8 mt-8">
               <h3 className="text-xl font-bold text-gray-900 mb-6">Especificaciones</h3>
               <div className="space-y-4">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
-                    <span className="text-gray-600">{key}</span>
-                    <span className="text-gray-900 font-medium">{value}</span>
+                {product.specifications ? (
+                  Object.entries(product.specifications).map(([key, value]) => (
+                    <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
+                      <span className="text-gray-600">{key}</span>
+                      <span className="text-gray-900 font-medium">{value}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="py-2">
+                    <span className="text-gray-600">Información no disponible</span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
