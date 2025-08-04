@@ -1,0 +1,450 @@
+import React, { useState, useEffect } from 'react';
+import { Plus, Pencil, Trash2, Save, X, Search } from 'lucide-react';
+import { api } from '../../utils/api';
+
+// Типы для продуктов
+interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  oldPrice: number | null;
+  description: string;
+  image: string;
+  inStock: boolean;
+}
+
+// Начальные данные для демонстрации
+const initialProducts: Product[] = [
+  {
+    id: 'eng-001',
+    name: 'Filtro de aceite Mann W712/75',
+    brand: 'MANN-FILTER',
+    category: 'engine',
+    price: 45,
+    oldPrice: 52,
+    description: 'Filtro de aceite original para BMW, Mercedes, Audi',
+    image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
+    inStock: true
+  },
+  {
+    id: 'brk-001',
+    name: 'Pastillas de freno Brembo P50088',
+    brand: 'BREMBO',
+    category: 'brakes',
+    price: 32,
+    oldPrice: 35,
+    description: 'Pastillas de freno delanteras para conducción deportiva',
+    image: 'https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800',
+    inStock: true
+  }
+];
+
+// Категории для выпадающего списка
+const categories = [
+  { id: 'engine', name: 'Motor y sistema de alimentación' },
+  { id: 'brakes', name: 'Sistema de frenos' },
+  { id: 'suspension', name: 'Suspensión y dirección' },
+  { id: 'electrical', name: 'Sistema eléctrico' },
+  { id: 'body', name: 'Carrocería' },
+  { id: 'interior', name: 'Interior y confort' },
+  { id: 'consumables', name: 'Consumibles' },
+  { id: 'tools', name: 'Herramientas y equipos' },
+  { id: 'tires', name: 'Neumáticos' },
+  { id: 'adblue', name: 'Componentes AdBlue y SCR' }
+];
+
+export default function ProductManager() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Новый продукт по умолчанию
+  const defaultNewProduct: Product = {
+    id: '',
+    name: '',
+    brand: '',
+    category: '',
+    price: 0,
+    oldPrice: null,
+    description: '',
+    image: '',
+    inStock: true
+  };
+  
+  // Загрузка продуктов при монтировании
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await api.getAll('products');
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        // Используем начальные данные в случае ошибки
+        setProducts(initialProducts);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
+  
+  // Фильтрация продуктов по поиску
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  // Обработчики событий
+  const handleAddNew = () => {
+    setEditingProduct({ ...defaultNewProduct, id: `prod-${Date.now()}` });
+    setIsAdding(true);
+  };
+  
+  const handleEdit = (product: Product) => {
+    setEditingProduct({ ...product });
+    setIsAdding(false);
+  };
+  
+  const handleDelete = async (id: string) => {
+    if (window.confirm('¿Está seguro de que desea eliminar este producto?')) {
+      try {
+        await api.delete('products', id);
+        setProducts(products.filter(p => p.id !== id));
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Error al eliminar el producto');
+      }
+    }
+  };
+  
+  const handleSave = async () => {
+    if (!editingProduct) return;
+    
+    try {
+      let savedProduct;
+      
+      if (isAdding) {
+        // Создание нового товара
+        savedProduct = await api.create('products', editingProduct);
+        setProducts([...products, savedProduct]);
+      } else {
+        // Обновление существующего товара
+        savedProduct = await api.update('products', editingProduct.id, editingProduct);
+        setProducts(products.map(p => p.id === savedProduct.id ? savedProduct : p));
+      }
+      
+      setEditingProduct(null);
+      setIsAdding(false);
+    } catch (error) {
+      console.error('Error saving product:', error);
+      alert('Error al guardar el producto');
+    }
+  };
+  
+  const handleCancel = () => {
+    setEditingProduct(null);
+    setIsAdding(false);
+  };
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (!editingProduct) return;
+    
+    const { name, value, type } = e.target;
+    
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked;
+      setEditingProduct({ ...editingProduct, [name]: checked });
+    } else if (name === 'price' || name === 'oldPrice') {
+      const numValue = name === 'oldPrice' && value === '' ? null : parseFloat(value);
+      setEditingProduct({ ...editingProduct, [name]: numValue });
+    } else {
+      setEditingProduct({ ...editingProduct, [name]: value });
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-bold text-gray-900">Управление товарами</h2>
+        <button
+          onClick={handleAddNew}
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Добавить товар
+        </button>
+      </div>
+      
+      <div className="mb-6">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Поиск товаров..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+        </div>
+      </div>
+      
+      {editingProduct && (
+        <div className="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            {isAdding ? 'Добавление нового товара' : 'Редактирование товара'}
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                ID товара
+              </label>
+              <input
+                type="text"
+                name="id"
+                value={editingProduct.id}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={!isAdding}
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Название
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={editingProduct.name}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Бренд
+              </label>
+              <input
+                type="text"
+                name="brand"
+                value={editingProduct.brand}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Категория
+              </label>
+              <select
+                name="category"
+                value={editingProduct.category}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              >
+                <option value="">Выберите категорию</option>
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Цена
+              </label>
+              <input
+                type="number"
+                name="price"
+                value={editingProduct.price}
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Старая цена (для скидки)
+              </label>
+              <input
+                type="number"
+                name="oldPrice"
+                value={editingProduct.oldPrice || ''}
+                onChange={handleChange}
+                min="0"
+                step="0.01"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                URL изображения
+              </label>
+              <input
+                type="text"
+                name="image"
+                value={editingProduct.image}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Описание
+              </label>
+              <textarea
+                name="description"
+                value={editingProduct.description}
+                onChange={handleChange}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  name="inStock"
+                  checked={editingProduct.inStock}
+                  onChange={(e) => handleChange(e as React.ChangeEvent<HTMLInputElement>)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <span className="ml-2 text-gray-700">В наличии</span>
+              </label>
+            </div>
+          </div>
+          
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <X className="h-4 w-4 inline mr-1" />
+              Отмена
+            </button>
+            
+            <button
+              onClick={handleSave}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Save className="h-4 w-4 inline mr-1" />
+              Сохранить
+            </button>
+          </div>
+        </div>
+      )}
+      
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Изображение
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Название
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Категория
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Цена
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Статус
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Действия
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <tr key={product.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {product.image ? (
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="h-10 w-10 object-cover rounded-md"
+                      />
+                    ) : (
+                      <div className="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">
+                        <span className="text-gray-500 text-xs">Нет фото</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {product.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                    <div className="text-sm text-gray-500">{product.brand}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {categories.find(c => c.id === product.category)?.name || product.category}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">€{product.price.toFixed(2)}</div>
+                    {product.oldPrice && (
+                      <div className="text-sm text-gray-500 line-through">€{product.oldPrice.toFixed(2)}</div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      product.inStock 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {product.inStock ? 'В наличии' : 'Нет в наличии'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleEdit(product)}
+                      className="text-blue-600 hover:text-blue-900 mr-4"
+                    >
+                      <Pencil className="h-4 w-4 inline" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      <Trash2 className="h-4 w-4 inline" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+                  Товары не найдены
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
