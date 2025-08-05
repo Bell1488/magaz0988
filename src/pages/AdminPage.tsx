@@ -4,6 +4,7 @@ import ProductManager from '../components/admin/ProductManager';
 import CategoryManager from '../components/admin/CategoryManager';
 import OrderManager from '../components/admin/OrderManager';
 import RequestManager from '../components/admin/RequestManager';
+import RepairManager from '../components/admin/RepairManager';
 import { Lock } from 'lucide-react';
 
 // Простая аутентификация для админ-панели
@@ -16,6 +17,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('products');
   const [newOrders, setNewOrders] = useState(0);
   const [newRequests, setNewRequests] = useState(0);
+  const [newRepairs, setNewRepairs] = useState(0);
 
   // Проверка аутентификации при загрузке страницы
   useEffect(() => {
@@ -45,6 +47,14 @@ export default function AdminPage() {
           const requests = await requestsResponse.json();
           const newRequestsCount = requests.filter(request => request.status === 'new' && !localStorage.getItem(`viewed_request_${request.id}`)).length;
           setNewRequests(newRequestsCount);
+        }
+
+        // Загрузка новых заявок на ремонт
+        const repairsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`);
+        if (repairsResponse.ok) {
+          const repairs = await repairsResponse.json();
+          const newRepairsCount = repairs.filter(repair => repair.isNew && !localStorage.getItem(`viewed_repair_${repair.id}`)).length;
+          setNewRepairs(newRepairsCount);
         }
       } catch (error) {
         console.error('Error fetching new items:', error);
@@ -90,6 +100,21 @@ export default function AdminPage() {
           setNewRequests(0);
         })
         .catch(error => console.error('Error marking requests as viewed:', error));
+    }
+    
+    // Отмечаем заявки на ремонт как просмотренные при переходе на вкладку ремонтов
+    if (value === 'repairs' && newRepairs > 0) {
+      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`)
+        .then(response => response.json())
+        .then(repairs => {
+          repairs.forEach(repair => {
+            if (repair.isNew) {
+              localStorage.setItem(`viewed_repair_${repair.id}`, 'true');
+            }
+          });
+          setNewRepairs(0);
+        })
+        .catch(error => console.error('Error marking repairs as viewed:', error));
     }
   };
 
@@ -186,6 +211,14 @@ export default function AdminPage() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="repairs" className="relative">
+              Ремонты
+              {newRepairs > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {newRepairs}
+                </span>
+              )}
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="products">
@@ -202,6 +235,10 @@ export default function AdminPage() {
           
           <TabsContent value="requests">
             <RequestManager />
+          </TabsContent>
+          
+          <TabsContent value="repairs">
+            <RepairManager />
           </TabsContent>
         </Tabs>
       </div>

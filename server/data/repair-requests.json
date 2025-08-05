@@ -1,0 +1,14 @@
+[
+  {
+    "id": "REP-001",
+    "date": "2023-08-01T15:30:00",
+    "name": "Иван Петров",
+    "email": "ivan.petrov@example.com",
+    "phone": "+34 678 123 456",
+    "partName": "Блок управления двигателем BMW N54",
+    "description": "Блок не отвечает на диагностику, горит чек энджин",
+    "status": "new",
+    "images": [],
+    "isNew": false
+  }
+] 

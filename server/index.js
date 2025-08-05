@@ -16,6 +16,7 @@ const productsFile = path.join(dataDir, 'products.json');
 const categoriesFile = path.join(dataDir, 'categories.json');
 const ordersFile = path.join(dataDir, 'orders.json');
 const firmwareRequestsFile = path.join(dataDir, 'firmware-requests.json');
+const repairRequestsFile = path.join(dataDir, 'repair-requests.json');
 
 // Создаем директории для данных и загрузок, если они не существуют
 if (!fs.existsSync(dataDir)) {
@@ -76,6 +77,9 @@ const initialOrders = [
 
 // Начальные данные для заявок на прошивку
 const initialFirmwareRequests = [];
+
+// Начальные данные для заявок на ремонт
+const initialRepairRequests = [];
 
 // Вспомогательные функции для работы с данными
 const readData = (file) => {
@@ -423,6 +427,84 @@ app.put('/api/firmware-requests/:id', (req, res) => {
     res.json(updatedRequest);
   } else {
     res.status(500).send('Error al actualizar la solicitud');
+  }
+});
+
+// Маршруты API для заявок на ремонт
+app.get('/api/repair-requests', (req, res) => {
+  const requests = readData(repairRequestsFile) || initialRepairRequests;
+  res.json(requests);
+});
+
+app.get('/api/repair-requests/:id', (req, res) => {
+  const requests = readData(repairRequestsFile) || initialRepairRequests;
+  const request = requests.find(r => r.id === req.params.id);
+  
+  if (request) {
+    res.json(request);
+  } else {
+    res.status(404).send('Solicitud de reparación no encontrada');
+  }
+});
+
+app.post('/api/repair-requests', upload.array('images', 5), (req, res) => {
+  try {
+    const requests = readData(repairRequestsFile) || initialRepairRequests;
+    
+    // Генерируем уникальный ID для заявки
+    const lastRequest = requests.length > 0 ? requests[requests.length - 1] : { id: 'REP-000' };
+    const lastId = parseInt(lastRequest.id ? lastRequest.id.split('-')[1] : '000');
+    const newId = `REP-${String(lastId + 1).padStart(3, '0')}`;
+    
+    const newRequest = {
+      id: newId,
+      date: new Date().toISOString(),
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone,
+      partName: req.body.partName,
+      description: req.body.description,
+      status: 'new',
+      images: [],
+      isNew: true
+    };
+    
+    // Если были загружены изображения, добавляем информацию о них
+    if (req.files && req.files.length > 0) {
+      newRequest.images = req.files.map(file => ({
+        url: `/uploads/${file.filename}`,
+        originalName: file.originalname
+      }));
+    }
+    
+    requests.push(newRequest);
+    
+    if (writeData(repairRequestsFile, requests)) {
+      res.status(201).json(newRequest);
+    } else {
+      res.status(500).send('Error al guardar la solicitud de reparación');
+    }
+  } catch (error) {
+    console.error('Error processing repair request:', error);
+    res.status(500).send('Error al procesar la solicitud de reparación');
+  }
+});
+
+app.put('/api/repair-requests/:id', (req, res) => {
+  const requests = readData(repairRequestsFile) || initialRepairRequests;
+  const updatedRequest = req.body;
+  const index = requests.findIndex(r => r.id === req.params.id);
+  
+  if (index === -1) {
+    return res.status(404).send('Solicitud de reparación no encontrada');
+  }
+  
+  requests[index] = updatedRequest;
+  
+  if (writeData(repairRequestsFile, requests)) {
+    res.json(updatedRequest);
+  } else {
+    res.status(500).send('Error al actualizar la solicitud de reparación');
   }
 });
 
