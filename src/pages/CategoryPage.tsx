@@ -4,6 +4,20 @@ import { Filter, SlidersHorizontal, Star, ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CategoryFilters from '../components/CategoryFilters';
 
+// Названия категорий
+const categoryNames: Record<string, string> = {
+  engine: 'Motor y sistema de alimentación',
+  brakes: 'Sistema de frenos',
+  suspension: 'Suspensión y dirección',
+  electrical: 'Sistema eléctrico',
+  body: 'Carrocería',
+  interior: 'Interior y confort',
+  consumables: 'Consumibles',
+  tools: 'Herramientas y equipos',
+  tires: 'Neumáticos',
+  adblue: 'Componentes AdBlue y SCR'
+};
+
 export default function CategoryPage() {
   const { categoryId } = useParams();
   const { dispatch } = useCart();
@@ -17,13 +31,26 @@ export default function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`)
-      .then(res => res.json())
+    const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`;
+    console.log('Fetching products from:', apiUrl);
+    console.log('Category ID:', categoryId);
+    
+    fetch(apiUrl)
+      .then(res => {
+        console.log('Response status:', res.status);
+        return res.json();
+      })
       .then(data => {
-        setProducts(data.filter((p: any) => p.category === categoryId));
+        console.log('Products data:', data);
+        const filteredProducts = data.filter((p: any) => p.category === categoryId);
+        console.log('Filtered products for category', categoryId, ':', filteredProducts);
+        setProducts(filteredProducts);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(error => {
+        console.error('Error fetching products:', error);
+        setLoading(false);
+      });
   }, [categoryId]);
 
   const categoryName = categoryNames[categoryId as keyof typeof categoryNames] || 'Categoría';
