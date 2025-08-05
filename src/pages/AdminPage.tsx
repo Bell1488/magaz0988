@@ -5,6 +5,7 @@ import CategoryManager from '../components/admin/CategoryManager';
 import OrderManager from '../components/admin/OrderManager';
 import RequestManager from '../components/admin/RequestManager';
 import RepairManager from '../components/admin/RepairManager';
+import BlogManager from '../components/admin/BlogManager';
 import { Lock } from 'lucide-react';
 
 // Простая аутентификация для админ-панели
@@ -219,6 +220,7 @@ export default function AdminPage() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="blog">Blog</TabsTrigger>
           </TabsList>
           
           <TabsContent value="products">
@@ -239,6 +241,10 @@ export default function AdminPage() {
           
           <TabsContent value="repairs">
             <RepairManager />
+          </TabsContent>
+          
+          <TabsContent value="blog">
+            <BlogManager />
           </TabsContent>
         </Tabs>
       </div>

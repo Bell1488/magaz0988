@@ -14,6 +14,8 @@ import FirmwareModPage from './pages/FirmwareModPage';
 import TiresPage from './pages/TiresPage';
 import AdBluePage from './pages/AdBluePage';
 import AdminPage from './pages/AdminPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
 import { CartProvider } from './context/CartContext';
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
               <Route path="/adblue" element={<AdBluePage />} />
               <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogPostPage />} />
             </Routes>
           </main>
           {!isAdminPage && <Footer />}

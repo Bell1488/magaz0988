@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User } from 'lucide-react';
+import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User, Star, Truck, Shield, Clock } from 'lucide-react';
 
 // Компонент поп-апа для заявки на ремонт
 function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -36,15 +36,15 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
       });
 
       if (response.ok) {
-        alert('Заявка на ремонт успешно отправлена!');
+        alert('¡Solicitud de reparación enviada con éxito!');
         setFormData({ name: '', email: '', phone: '', partName: '', description: '', images: [] });
         onClose();
       } else {
-        alert('Ошибка при отправке заявки. Попробуйте еще раз.');
+        alert('Error al enviar la solicitud. Inténtalo de nuevo.');
       }
     } catch (error) {
       console.error('Error submitting repair request:', error);
-      alert('Ошибка при отправке заявки. Попробуйте еще раз.');
+      alert('Error al enviar la solicitud. Inténtalo de nuevo.');
     } finally {
       setIsSubmitting(false);
     }
@@ -68,7 +68,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
       <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Заявка на ремонт</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Solicitud de Reparación</h2>
             <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-700">
               <X className="h-6 w-6" />
             </button>
@@ -79,7 +79,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <User className="h-4 w-4 inline mr-2" />
-                  Имя *
+                  Nombre *
                 </label>
                 <input
                   type="text"
@@ -108,7 +108,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Phone className="h-4 w-4 inline mr-2" />
-                Телефон *
+                Teléfono *
               </label>
               <input
                 type="tel"
@@ -122,7 +122,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Wrench className="h-4 w-4 inline mr-2" />
-                Название детали *
+                Nombre de la pieza *
               </label>
               <input
                 type="text"
@@ -130,13 +130,13 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 value={formData.partName}
                 onChange={(e) => setFormData(prev => ({ ...prev, partName: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Например: Блок управления двигателем, Датчик кислорода..."
+                placeholder="Ejemplo: ECU del motor, Sensor de oxígeno..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Описание проблемы *
+                Descripción del problema *
               </label>
               <textarea
                 required
@@ -144,14 +144,14 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Опишите подробно проблему с деталью..."
+                placeholder="Describe detalladamente el problema con la pieza..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Upload className="h-4 w-4 inline mr-2" />
-                Фотографии детали (необязательно)
+                Fotos de la pieza (opcional)
               </label>
               <input
                 type="file"
@@ -167,7 +167,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                     <div key={index} className="relative">
                       <img
                         src={URL.createObjectURL(image)}
-                        alt={`Фото ${index + 1}`}
+                        alt={`Foto ${index + 1}`}
                         className="w-full h-20 object-cover rounded border"
                       />
                       <button
@@ -189,14 +189,14 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 onClick={onClose}
                 className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
               >
-                Отмена
+                Cancelar
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
               >
-                {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
+                {isSubmitting ? 'Enviando...' : 'Enviar solicitud'}
               </button>
             </div>
           </form>
@@ -211,15 +211,110 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Каталоги Neumáticos и AdBlue */}
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-4xl lg:text-6xl font-bold mb-6">
+                Repuestos de
+                <span className="text-blue-200"> calidad</span>
+              </h1>
+              <p className="text-xl text-blue-100 mb-8">
+                Más de 50.000 referencias de repuestos para todas las marcas de coches.
+                Envío rápido y garantía de calidad.
+              </p>
+              <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex">
+                <Link
+                  to="/catalog"
+                  className="inline-flex items-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Ver catálogo
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+                <button
+                  onClick={() => setIsRepairModalOpen(true)}
+                  className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors"
+                >
+                  <Wrench className="mr-2 h-5 w-5" />
+                  Solicitar reparación
+                </button>
+              </div>
+            </div>
+            <div>
+              <img
+                src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Repuestos de automóviles"
+                className="rounded-lg shadow-2xl"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* О нас */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Наш каталог
+              Sobre Nosotros
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              ElatNeo es su socio de confianza para repuestos de automóviles de alta calidad. 
+              Con años de experiencia en el sector, ofrecemos soluciones completas para el mantenimiento 
+              y reparación de su vehículo.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Star className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Calidad Garantizada
+              </h3>
+              <p className="text-gray-600">
+                Todos nuestros productos provienen de fabricantes reconocidos y cuentan con garantía oficial.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Truck className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Envío Rápido
+              </h3>
+              <p className="text-gray-600">
+                Entrega en Madrid el mismo día, en España hasta 3 días hábiles.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Soporte Técnico
+              </h3>
+              <p className="text-gray-600">
+                Asesoramiento técnico especializado y servicio de reparación de componentes electrónicos.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Каталоги Neumáticos y AdBlue */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Nuestro Catálogo
             </h2>
             <p className="text-xl text-gray-600">
-              Шины и компоненты AdBlue для вашего автомобиля
+              Neumáticos y componentes AdBlue para su vehículo
             </p>
           </div>
           
@@ -238,15 +333,16 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">Neumáticos</h3>
-                  <p className="text-blue-200">Летние, зимние и всесезонные шины</p>
+                  <p className="text-blue-200">Neumáticos de verano, invierno y todo tiempo</p>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-gray-600 mb-4">
-                  Широкий выбор шин для всех сезонов и условий. От бюджетных до премиум вариантов.
+                  Amplia selección de neumáticos para todas las estaciones y condiciones. 
+                  Desde opciones económicas hasta neumáticos premium.
                 </p>
                 <div className="flex items-center text-blue-600 font-semibold">
-                  Перейти к каталогу
+                  Ir al catálogo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
               </div>
@@ -266,15 +362,16 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">Componentes AdBlue y SCR</h3>
-                  <p className="text-blue-200">Системы очистки выхлопных газов</p>
+                  <p className="text-blue-200">Sistemas de limpieza de gases de escape</p>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-gray-600 mb-4">
-                  Компоненты для систем SCR и жидкость AdBlue. Снижение вредных выбросов.
+                  Componentes para sistemas SCR y líquido AdBlue. 
+                  Reducción de emisiones nocivas y cumplimiento de normativas Euro 6.
                 </p>
                 <div className="flex items-center text-blue-600 font-semibold">
-                  Перейти к каталогу
+                  Ir al catálogo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
               </div>
@@ -284,7 +381,7 @@ export default function HomePage() {
       </section>
 
       {/* Сервис ремонта */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -292,32 +389,32 @@ export default function HomePage() {
                 Servicio de Reparación
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Мы специализируемся на ремонте всех электронных компонентов автомобиля:
+                Nos especializamos en la reparación de todos los componentes electrónicos del automóvil:
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Блоки управления двигателем (ECU)
+                  Unidades de control del motor (ECU)
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Датчики кислорода и температуры
+                  Sensores de oxígeno y temperatura
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Модули ABS и ESP
+                  Módulos ABS y ESP
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Блоки управления трансмиссией
+                  Unidades de control de transmisión
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Модули комфорта и безопасности
+                  Módulos de confort y seguridad
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Диагностика и программирование
+                  Diagnóstico y programación
                 </li>
               </ul>
               <button
@@ -325,13 +422,13 @@ export default function HomePage() {
                 className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Wrench className="mr-2 h-5 w-5" />
-                Оставить заявку на ремонт
+                Solicitar reparación
               </button>
             </div>
             <div>
               <img
                 src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Сервис ремонта"
+                alt="Servicio de reparación"
                 className="rounded-lg shadow-2xl"
               />
             </div>
@@ -340,7 +437,7 @@ export default function HomePage() {
       </section>
 
       {/* Modificación de firmware */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -355,28 +452,28 @@ export default function HomePage() {
                 Modificación de Firmware
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Профессиональная модификация прошивок для улучшения характеристик вашего автомобиля:
+                Modificación profesional de firmware para mejorar las características de su automóvil:
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Увеличение мощности и крутящего момента
+                  Aumento de potencia y par motor
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Оптимизация расхода топлива
+                  Optimización del consumo de combustible
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Удаление ограничений скорости
+                  Eliminación de limitadores de velocidad
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Отключение систем EGR и DPF
+                  Desactivación de sistemas EGR y DPF
                 </li>
                 <li className="flex items-center text-gray-700">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
-                  Адаптация под новые компоненты
+                  Adaptación a nuevos componentes
                 </li>
               </ul>
               <Link
@@ -384,14 +481,14 @@ export default function HomePage() {
                 className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Settings className="mr-2 h-5 w-5" />
-                Заказать услугу
+                Solicitar servicio
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Поп-ап для заявки на ремонт */}
+      {/* Поп-ап para la solicitud de reparación */}
       <RepairModal isOpen={isRepairModalOpen} onClose={() => setIsRepairModalOpen(false)} />
     </div>
   );

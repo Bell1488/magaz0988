@@ -42,11 +42,17 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Inicio
+            </Link>
             <Link to="/catalog" className="text-gray-700 hover:text-blue-600 transition-colors">
               Catálogo
             </Link>
             <Link to="/firmware-mod" className="text-gray-700 hover:text-blue-600 transition-colors">
               Modificación de firmware
+            </Link>
+            <Link to="/blog" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Blog
             </Link>
             <Link to="/cart" className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
               <ShoppingCart className="h-6 w-6" />
@@ -87,6 +93,13 @@ export default function Header() {
         <div className="md:hidden bg-white border-t border-gray-200">
           <nav className="px-4 py-4 space-y-4">
             <Link
+              to="/"
+              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Inicio
+            </Link>
+            <Link
               to="/catalog"
               className="block text-gray-700 hover:text-blue-600 transition-colors"
               onClick={() => setIsMenuOpen(false)}
@@ -99,6 +112,13 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Modificación de firmware
+            </Link>
+            <Link
+              to="/blog"
+              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
             </Link>
             <Link
               to="/cart"

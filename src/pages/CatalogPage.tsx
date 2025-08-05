@@ -1,123 +1,201 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Grid, List, Filter } from 'lucide-react';
-import SearchResults from '../components/SearchResults';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Search } from 'lucide-react';
+
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  productCount: number;
+}
 
 export default function CatalogPage() {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const location = useLocation();
-  const searchQuery = new URLSearchParams(location.search).get('search') || '';
-  const [categories, setCategories] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  
+  const [categories, setCategories] = useState<Category[]>([]);
+
   useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories`)
-      .then(res => res.json())
-      .then(data => {
-        setCategories(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Загружаем только нужные категории
+    const mainCategories: Category[] = [
+      {
+        id: 'tires',
+        name: 'Neumáticos',
+        description: 'Neumáticos de verano, invierno y todo tiempo para todas las marcas de vehículos',
+        image: 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800',
+        productCount: 150
+      },
+      {
+        id: 'adblue',
+        name: 'Componentes AdBlue y SCR',
+        description: 'Sistemas de limpieza de gases de escape y componentes para cumplimiento de normativas Euro 6',
+        image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
+        productCount: 75
+      }
+    ];
+    
+    setCategories(mainCategories);
+    setLoading(false);
   }, []);
-  
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const query = params.get('search');
-    if (query) {
-      setSearchQuery(query);
-    }
-  }, [location.search]);
+
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Catálogo de repuestos</h1>
-              <p className="text-gray-600 mt-2">Selecciona una categoría de productos</p>
-            </div>
+          <div className="text-center">
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Catálogo de Productos
+            </h1>
+            <p className="text-xl text-gray-600 mb-8">
+              Encuentre los repuestos que necesita para su vehículo
+            </p>
             
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Filtros
-              </button>
-              
-              <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50'} transition-colors`}
-                >
-                  <Grid className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50'} transition-colors`}
-                >
-                  <List className="h-4 w-4" />
-                </button>
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Buscar categorías..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
-        ) : searchQuery ? (
-          <SearchResults query={searchQuery} />
-        ) : (
-          /* Categories Grid */
-          <div className={`grid gap-6 ${
-            viewMode === 'grid' 
-              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-              : 'grid-cols-1'
-          }`}>
-            {categories.map((category) => (
+      {/* Categories Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {filteredCategories.map((category) => (
             <Link
               key={category.id}
               to={`/category/${category.id}`}
-              className={`group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden ${
-                viewMode === 'list' ? 'flex' : ''
-              }`}
+              className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
             >
-              <img
-                src={category.image}
-                alt={category.name}
-                className={`object-cover group-hover:scale-105 transition-transform duration-300 ${
-                  viewMode === 'grid' ? 'w-full h-48' : 'w-48 h-32'
-                }`}
-              />
-              <div className="p-6 flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  {category.name}
-                </h3>
+              <div className="relative h-64">
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-6 left-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
+                  <p className="text-blue-200">{category.productCount} productos disponibles</p>
+                </div>
+              </div>
+              <div className="p-6">
                 <p className="text-gray-600 mb-4">
                   {category.description}
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">
-                    {category.count.toLocaleString()} productos
-                  </span>
-                  <span className="text-blue-600 font-medium group-hover:underline">
-                    Ver →
-                  </span>
+                <div className="flex items-center text-blue-600 font-semibold">
+                  Ver productos
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
               </div>
             </Link>
           ))}
         </div>
-        )}
+
+        {/* Category Descriptions */}
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Neumáticos Description */}
+          <div className="bg-white rounded-xl p-8 shadow-lg">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Neumáticos</h3>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Ofrecemos una amplia gama de neumáticos para todas las estaciones y condiciones de conducción:
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Neumáticos de verano:</strong> Optimizados para temperaturas cálidas y superficies secas</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Neumáticos de invierno:</strong> Diseñados para nieve, hielo y temperaturas bajas</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Neumáticos todo tiempo:</strong> Versátiles para uso durante todo el año</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Neumáticos de alto rendimiento:</strong> Para vehículos deportivos y de lujo</span>
+                </li>
+              </ul>
+              <p className="mt-4">
+                Todas nuestras marcas incluyen: Michelin, Continental, Pirelli, Bridgestone, Goodyear y más.
+              </p>
+            </div>
+          </div>
+
+          {/* AdBlue Description */}
+          <div className="bg-white rounded-xl p-8 shadow-lg">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Componentes AdBlue y SCR</h3>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Sistemas completos para la reducción de emisiones y cumplimiento de normativas ambientales:
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Líquido AdBlue:</strong> Solución de urea para sistemas SCR</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Inyectores AdBlue:</strong> Componentes de inyección precisos</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Sensores NOx:</strong> Monitoreo de emisiones en tiempo real</span>
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
+                  <span><strong>Bombas de dosificación:</strong> Control preciso del flujo de AdBlue</span>
+                </li>
+              </ul>
+              <p className="mt-4">
+                Compatible con vehículos Euro 4, Euro 5 y Euro 6. Cumple con la norma ISO 22241.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="mt-16 text-center">
+          <div className="bg-blue-600 rounded-xl p-8 text-white">
+            <h3 className="text-2xl font-bold mb-4">¿No encuentra lo que busca?</h3>
+            <p className="text-blue-100 mb-6">
+              Nuestro equipo técnico está disponible para ayudarle a encontrar el repuesto correcto para su vehículo.
+            </p>
+            <button
+              onClick={() => window.location.href = '/#repair'}
+              className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <ArrowRight className="mr-2 h-5 w-5" />
+              Contactar con soporte técnico
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ const categoriesFile = path.join(dataDir, 'categories.json');
 const ordersFile = path.join(dataDir, 'orders.json');
 const firmwareRequestsFile = path.join(dataDir, 'firmware-requests.json');
 const repairRequestsFile = path.join(dataDir, 'repair-requests.json');
+const blogPostsFile = path.join(dataDir, 'blog-posts.json');
 
 // Создаем директории для данных и загрузок, если они не существуют
 if (!fs.existsSync(dataDir)) {
@@ -81,6 +82,9 @@ const initialFirmwareRequests = [];
 // Начальные данные для заявок на ремонт
 const initialRepairRequests = [];
 
+// Начальные данные для статей блога
+const initialBlogPosts = [];
+
 // Вспомогательные функции для работы с данными
 const readData = (file) => {
   try {
@@ -122,6 +126,10 @@ if (!fs.existsSync(ordersFile)) {
 
 if (!fs.existsSync(firmwareRequestsFile)) {
   writeData(firmwareRequestsFile, initialFirmwareRequests);
+}
+
+if (!fs.existsSync(blogPostsFile)) {
+  writeData(blogPostsFile, initialBlogPosts);
 }
 
 // Маршруты API для товаров
@@ -505,6 +513,116 @@ app.put('/api/repair-requests/:id', (req, res) => {
     res.json(updatedRequest);
   } else {
     res.status(500).send('Error al actualizar la solicitud de reparación');
+  }
+});
+
+// Маршруты API для статей блога
+app.get('/api/blog-posts', (req, res) => {
+  const posts = readData(blogPostsFile) || initialBlogPosts;
+  res.json(posts);
+});
+
+app.get('/api/blog-posts/:id', (req, res) => {
+  const posts = readData(blogPostsFile) || initialBlogPosts;
+  const post = posts.find(p => p.id === req.params.id);
+  
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404).send('Artículo no encontrado');
+  }
+});
+
+app.post('/api/blog-posts', upload.single('image'), (req, res) => {
+  try {
+    const posts = readData(blogPostsFile) || initialBlogPosts;
+    
+    // Генерируем уникальный ID для статьи
+    const lastPost = posts.length > 0 ? posts[posts.length - 1] : { id: 'blog-000' };
+    const lastId = parseInt(lastPost.id ? lastPost.id.split('-')[1] : '000');
+    const newId = `blog-${String(lastId + 1).padStart(3, '0')}`;
+    
+    const newPost = {
+      id: newId,
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      author: req.body.author,
+      date: new Date().toISOString(),
+      readTime: parseInt(req.body.readTime) || 5,
+      tags: req.body.tags ? req.body.tags.split(',').map(tag => tag.trim()) : [],
+      image: req.body.image || 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800'
+    };
+    
+    // Если был загружен файл изображения, используем его
+    if (req.file) {
+      newPost.image = `/uploads/${req.file.filename}`;
+    }
+    
+    posts.push(newPost);
+    
+    if (writeData(blogPostsFile, posts)) {
+      res.status(201).json(newPost);
+    } else {
+      res.status(500).send('Error al guardar el artículo');
+    }
+  } catch (error) {
+    console.error('Error processing blog post:', error);
+    res.status(500).send('Error al procesar el artículo');
+  }
+});
+
+app.put('/api/blog-posts/:id', upload.single('image'), (req, res) => {
+  try {
+    const posts = readData(blogPostsFile) || initialBlogPosts;
+    const index = posts.findIndex(p => p.id === req.params.id);
+    
+    if (index === -1) {
+      return res.status(404).send('Artículo no encontrado');
+    }
+    
+    const updatedPost = {
+      ...posts[index],
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      author: req.body.author,
+      readTime: parseInt(req.body.readTime) || 5,
+      tags: req.body.tags ? req.body.tags.split(',').map(tag => tag.trim()) : []
+    };
+    
+    // Если был загружен новый файл изображения, используем его
+    if (req.file) {
+      updatedPost.image = `/uploads/${req.file.filename}`;
+    }
+    
+    posts[index] = updatedPost;
+    
+    if (writeData(blogPostsFile, posts)) {
+      res.json(updatedPost);
+    } else {
+      res.status(500).send('Error al actualizar el artículo');
+    }
+  } catch (error) {
+    console.error('Error updating blog post:', error);
+    res.status(500).send('Error al actualizar el artículo');
+  }
+});
+
+app.delete('/api/blog-posts/:id', (req, res) => {
+  const posts = readData(blogPostsFile) || initialBlogPosts;
+  const index = posts.findIndex(p => p.id === req.params.id);
+  
+  if (index === -1) {
+    return res.status(404).send('Artículo no encontrado');
+  }
+  
+  const deletedPost = posts.splice(index, 1)[0];
+  
+  if (writeData(blogPostsFile, posts)) {
+    res.json(deletedPost);
+  } else {
+    res.status(500).send('Error al eliminar el artículo');
   }
 });
 

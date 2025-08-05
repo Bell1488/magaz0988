@@ -1,0 +1,24 @@
+[
+  {
+    "id": "blog-001",
+    "title": "Guía completa para elegir neumáticos de verano",
+    "description": "Descubre cómo seleccionar los mejores neumáticos de verano para tu vehículo y mejorar el rendimiento en carretera.",
+    "content": "<h2>Introducción</h2><p>Los neumáticos de verano están diseñados específicamente para ofrecer un rendimiento óptimo en condiciones de temperatura cálida y superficies secas. En esta guía te explicamos todo lo que necesitas saber para hacer la mejor elección.</p><h2>Factores a considerar</h2><ul><li><strong>Índice de velocidad:</strong> Debe coincidir con las capacidades de tu vehículo</li><li><strong>Índice de carga:</strong> Debe soportar el peso de tu vehículo</li><li><strong>Patrón de la banda de rodadura:</strong> Afecta el agarre y la evacuación de agua</li><li><strong>Compuesto de la goma:</strong> Determina la durabilidad y el agarre</li></ul><h2>Marcas recomendadas</h2><p>Entre las mejores marcas de neumáticos de verano se encuentran Michelin, Continental, Pirelli y Bridgestone. Cada una ofrece diferentes características según tus necesidades específicas.</p>",
+    "image": "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "author": "Equipo ElatNeo",
+    "date": "2024-01-15T10:00:00",
+    "readTime": 5,
+    "tags": ["Neumáticos", "Verano", "Guía"]
+  },
+  {
+    "id": "blog-002",
+    "title": "Sistemas AdBlue: Todo lo que necesitas saber",
+    "description": "Conoce cómo funcionan los sistemas AdBlue y por qué son importantes para reducir las emisiones de tu vehículo.",
+    "content": "<h2>¿Qué es AdBlue?</h2><p>AdBlue es una solución acuosa de urea que se utiliza en los sistemas SCR (Selective Catalytic Reduction) para reducir las emisiones de óxidos de nitrógeno (NOx) en los motores diésel.</p><h2>¿Cómo funciona?</h2><p>El sistema AdBlue inyecta la solución en el escape del motor, donde se descompone en amoníaco. Este amoníaco reacciona con los NOx para convertirlos en nitrógeno y agua, que son inofensivos para el medio ambiente.</p><h2>Mantenimiento del sistema</h2><ul><li>Verificar regularmente el nivel de AdBlue</li><li>Usar solo AdBlue de calidad certificada</li><li>Reemplazar el filtro según las recomendaciones del fabricante</li><li>Realizar diagnósticos periódicos del sistema</li></ul>",
+    "image": "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "author": "Equipo ElatNeo",
+    "date": "2024-01-10T14:30:00",
+    "readTime": 4,
+    "tags": ["AdBlue", "SCR", "Emisiones"]
+  }
+] 
