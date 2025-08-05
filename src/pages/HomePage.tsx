@@ -252,59 +252,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* О нас */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Sobre Nosotros
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              ElatNeo es su socio de confianza para repuestos de automóviles de alta calidad. 
-              Con años de experiencia en el sector, ofrecemos soluciones completas para el mantenimiento 
-              y reparación de su vehículo.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-                <Star className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Calidad Garantizada
-              </h3>
-              <p className="text-gray-600">
-                Todos nuestros productos provienen de fabricantes reconocidos y cuentan con garantía oficial.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-                <Truck className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Envío Rápido
-              </h3>
-              <p className="text-gray-600">
-                Entrega en Madrid el mismo día, en España hasta 3 días hábiles.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-                <Shield className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                Soporte Técnico
-              </h3>
-              <p className="text-gray-600">
-                Asesoramiento técnico especializado y servicio de reparación de componentes electrónicos.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* Каталоги Neumáticos y AdBlue */}
       <section className="py-16 bg-gray-50">
@@ -483,6 +431,60 @@ export default function HomePage() {
                 <Settings className="mr-2 h-5 w-5" />
                 Solicitar servicio
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* О нас */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Sobre Nosotros
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              ElatNeo es su socio de confianza para repuestos de automóviles de alta calidad. 
+              Con años de experiencia en el sector, ofrecemos soluciones completas para el mantenimiento 
+              y reparación de su vehículo.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Star className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Calidad Garantizada
+              </h3>
+              <p className="text-gray-600">
+                Todos nuestros productos provienen de fabricantes reconocidos y cuentan con garantía oficial.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Truck className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Envío Rápido
+              </h3>
+              <p className="text-gray-600">
+                Entrega en Madrid el mismo día, en España hasta 3 días hábiles.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                Soporte Técnico
+              </h3>
+              <p className="text-gray-600">
+                Asesoramiento técnico especializado y servicio de reparación de componentes electrónicos.
+              </p>
             </div>
           </div>
         </div>
