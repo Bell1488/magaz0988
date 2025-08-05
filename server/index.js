@@ -82,7 +82,9 @@ const readData = (file) => {
   try {
     if (fs.existsSync(file)) {
       const data = fs.readFileSync(file, 'utf8');
-      return JSON.parse(data);
+      // Удаляем BOM если он есть
+      const cleanData = data.replace(/^\uFEFF/, '');
+      return JSON.parse(cleanData);
     }
     return null;
   } catch (error) {
