@@ -48,12 +48,6 @@ export default function Header() {
             <Link to="/firmware-mod" className="text-gray-700 hover:text-blue-600 transition-colors">
               Modificación de firmware
             </Link>
-            <Link to="/tires" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Neumáticos
-            </Link>
-            <Link to="/adblue" className="text-gray-700 hover:text-blue-600 transition-colors">
-              AdBlue y SCR
-            </Link>
             <Link to="/cart" className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
               <ShoppingCart className="h-6 w-6" />
               {state.items.length > 0 && (
@@ -105,20 +99,6 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Modificación de firmware
-            </Link>
-            <Link
-              to="/tires"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Neumáticos
-            </Link>
-            <Link
-              to="/adblue"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              AdBlue y SCR
             </Link>
             <Link
               to="/cart"
