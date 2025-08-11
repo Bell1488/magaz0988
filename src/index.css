@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --e-surface: 255 255 255;
+  --e-text: 17 24 39;
+  --e-muted: 107 114 128;
+  --e-primary: 37 99 235; /* blue-600 */
+  --e-accent: 14 165 233; /* sky-500 */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+  color: rgb(var(--e-text));
+  background: #0b1220; /* dark gradient base */
+}
+
+/* glass card */
+.e-card {
+  @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)];
+}
+
+.e-btn-primary {
+  @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-semibold text-white bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 transition-all shadow-lg shadow-blue-600/20;
+}
+
+.e-badge {
+  @apply inline-flex items-center rounded-full text-xs font-semibold px-3 py-1 bg-white/10 text-white/90;
+}
+
+.e-heading {
+  @apply text-white font-extrabold tracking-tight;
+}
+
+.e-subtle {
+  @apply text-white/70;
+}

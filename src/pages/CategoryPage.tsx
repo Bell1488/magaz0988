@@ -122,27 +122,27 @@ export default function CategoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-white shadow-sm">
+      <div className="backdrop-blur-xl bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between">
             <div>
-              <nav className="text-sm text-gray-500 mb-2">
-                <Link to="/" className="hover:text-blue-600">Inicio</Link>
+              <nav className="text-sm text-white/60 mb-2">
+                <Link to="/" className="hover:text-white">Inicio</Link>
                 <span className="mx-2">›</span>
-                <Link to="/catalog" className="hover:text-blue-600">Catálogo</Link>
+                <Link to="/catalog" className="hover:text-white">Catálogo</Link>
                 <span className="mx-2">›</span>
-                <span>{categoryName}</span>
+                <span className="text-white">{categoryName}</span>
               </nav>
-              <h1 className="text-3xl font-bold text-gray-900">{categoryName}</h1>
-              <p className="text-gray-600 mt-2">{products.length} productos en la categoría</p>
+              <h1 className="e-heading text-3xl">{categoryName}</h1>
+              <p className="e-subtle mt-2">{products.length} productos en la categoría</p>
             </div>
             
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="flex items-center px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center px-4 py-2 text-white/80 border border-white/15 rounded-lg hover:bg-white/10 transition-colors"
               >
                 <Filter className="h-4 w-4 mr-2" />
                 Filtros {Object.values(activeFilters).reduce((count, options) => count + options.length, 0) > 0 && 
@@ -152,7 +152,7 @@ export default function CategoryPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-white/15 rounded-lg text-white/80 bg-white/5 hover:bg-white/10 transition-colors"
               >
                 <option value="popular">Por popularidad</option>
                 <option value="price-asc">Por precio: más baratos</option>
@@ -180,7 +180,7 @@ export default function CategoryPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+            <div key={product.id} className="e-card hover:shadow-glow transition-all duration-300 overflow-hidden">
               <div className="relative">
                 <Link to={`/product/${product.id}`}>
                   <img
@@ -194,7 +194,7 @@ export default function CategoryPage() {
                     </div>
                   )}
                   {!product.inStock && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                       <span className="text-white font-medium">Sin stock</span>
                     </div>
                   )}
@@ -203,30 +203,30 @@ export default function CategoryPage() {
               
               <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-blue-600 font-medium">{product.brand}</span>
+                  <span className="text-sm text-sky-400 font-medium">{product.brand}</span>
                   <div className="flex items-center">
                     <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    <span className="text-sm text-gray-600 ml-1">{product.rating}</span>
-                    <span className="text-sm text-gray-400 ml-1">({product.reviews})</span>
+                    <span className="text-sm text-white/80 ml-1">{product.rating}</span>
+                    <span className="text-sm text-white/60 ml-1">({product.reviews})</span>
                   </div>
                 </div>
                 
                 <Link
                   to={`/product/${product.id}`}
-                  className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors block mb-2"
+                  className="text-lg font-semibold text-white hover:text-sky-300 transition-colors block mb-2"
                 >
                   {product.name}
                 </Link>
                 
-                <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+                <p className="text-white/80 text-sm mb-4">{product.description}</p>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-gray-900">
+                    <span className="text-2xl font-bold text-white">
                       €{product.price.toLocaleString()}
                     </span>
                     {product.oldPrice && (
-                      <span className="text-lg text-gray-400 line-through">
+                      <span className="text-lg text-white/60 line-through">
                         €{product.oldPrice.toLocaleString()}
                       </span>
                     )}
@@ -235,8 +235,8 @@ export default function CategoryPage() {
                   <button
                     onClick={() => addToCart(product)}
                     disabled={!product.inStock}
-                    className={`flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed ${
-                      addingToCart === product.id ? 'scale-95 bg-green-600' : ''
+                    className={`flex items-center px-4 py-2 rounded-lg transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed ${
+                      addingToCart === product.id ? 'scale-95 bg-green-600 text-white' : 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
                     }`}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
@@ -252,13 +252,13 @@ export default function CategoryPage() {
         {filteredProducts.length === 0 && (
           <div className="text-center py-16">
             {products.length === 0 ? (
-              <p className="text-xl text-gray-600">Los productos de esta categoría estarán disponibles pronto</p>
+              <p className="text-xl text-white/80">Los productos de esta categoría estarán disponibles pronto</p>
             ) : (
-              <p className="text-xl text-gray-600">No se encontraron productos que coincidan con los filtros seleccionados</p>
+              <p className="text-xl text-white/80">No se encontraron productos que coincidan con los filtros seleccionados</p>
             )}
             <Link
               to="/catalog"
-              className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-block mt-4 px-6 py-3 e-btn-primary"
             >
               Volver al catálogo
             </Link>

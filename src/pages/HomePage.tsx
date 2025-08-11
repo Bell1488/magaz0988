@@ -225,42 +225,37 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen bg-[radial-gradient(1200px_600px_at_10%_-10%,rgba(59,130,246,0.25),transparent),radial-gradient(800px_400px_at_90%_10%,rgba(14,165,233,0.25),transparent)]">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <section className="relative">
+        <div className="absolute inset-0 -z-10 opacity-30 bg-[radial-gradient(1000px_300px_at_50%_0%,rgba(255,255,255,0.15),transparent)]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                Repuestos de
-                <span className="text-blue-200"> calidad</span>
+              <div className="e-badge mb-4">ElatNeo — Repuestos y Servicios</div>
+              <h1 className="e-heading text-4xl lg:text-6xl mb-6">
+                Piezas premium y soluciones técnicas para su coche
               </h1>
-              <p className="text-xl text-blue-100 mb-8">
-                Más de 50.000 referencias de repuestos para todas las marcas de coches.
-                Envío rápido y garantía de calidad.
+              <p className="e-subtle text-lg lg:text-xl mb-8 max-w-xl">
+                Compra neumáticos y componentes AdBlue, solicita reparación de módulos electrónicos y
+                modificación de firmware — todo en un solo lugar.
               </p>
-              <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex">
-                <Link
-                  to="/catalog"
-                  className="inline-flex items-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-                >
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/catalog" className="e-btn-primary">
                   Ver catálogo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
-                <button
-                  onClick={() => setIsRepairModalOpen(true)}
-                  className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors"
-                >
+                <button onClick={() => setIsRepairModalOpen(true)} className="inline-flex items-center justify-center rounded-xl px-5 py-3 font-semibold text-white/90 border border-white/15 bg-white/5 hover:bg-white/10 transition-all">
                   <Wrench className="mr-2 h-5 w-5" />
                   Solicitar reparación
                 </button>
               </div>
             </div>
-            <div>
+            <div className="e-card overflow-hidden">
               <img
-                src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt="Repuestos de automóviles"
-                className="rounded-lg shadow-2xl"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
@@ -270,22 +265,18 @@ export default function HomePage() {
 
 
       {/* Каталоги Neumáticos y AdBlue */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Nuestro Catálogo
-            </h2>
-            <p className="text-xl text-gray-600">
-              Neumáticos y componentes AdBlue para su vehículo
-            </p>
+            <h2 className="e-heading text-3xl lg:text-4xl mb-4">Nuestro Catálogo</h2>
+            <p className="e-subtle text-xl">Neumáticos y componentes AdBlue para su vehículo</p>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Neumáticos */}
             <Link
               to="/category/tires"
-              className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              className="group e-card overflow-hidden"
             >
               <div className="relative h-64">
                 <img
@@ -296,15 +287,15 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">Neumáticos</h3>
-                  <p className="text-blue-200">Neumáticos de verano, invierno y todo tiempo</p>
+                  <p className="text-white/70">Neumáticos de verano, invierno y todo tiempo</p>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-gray-600 mb-4">
+                <p className="e-subtle mb-4">
                   Amplia selección de neumáticos para todas las estaciones y condiciones. 
                   Desde opciones económicas hasta neumáticos premium.
                 </p>
-                <div className="flex items-center text-blue-600 font-semibold">
+                <div className="flex items-center text-sky-400 font-semibold">
                   Ir al catálogo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
@@ -314,7 +305,7 @@ export default function HomePage() {
             {/* AdBlue */}
             <Link
               to="/category/adblue"
-              className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              className="group e-card overflow-hidden"
             >
               <div className="relative h-64">
                 <img
@@ -325,15 +316,15 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">Componentes AdBlue y SCR</h3>
-                  <p className="text-blue-200">Sistemas de limpieza de gases de escape</p>
+                  <p className="text-white/70">Sistemas de limpieza de gases de escape</p>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-gray-600 mb-4">
+                <p className="e-subtle mb-4">
                   Componentes para sistemas SCR y líquido AdBlue. 
                   Reducción de emisiones nocivas y cumplimiento de normativas Euro 6.
                 </p>
-                <div className="flex items-center text-blue-600 font-semibold">
+                <div className="flex items-center text-sky-400 font-semibold">
                   Ir al catálogo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
@@ -344,46 +335,43 @@ export default function HomePage() {
       </section>
 
       {/* Сервис ремонта */}
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="e-heading text-3xl lg:text-4xl mb-6">
                 Servicio de Reparación
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="e-subtle text-lg mb-6">
                 Nos especializamos en la reparación de todos los componentes electrónicos del automóvil:
               </p>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Unidades de control del motor (ECU)
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Sensores de oxígeno y temperatura
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Módulos ABS y ESP
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Unidades de control de transmisión
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Módulos de confort y seguridad
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Diagnóstico y programación
                 </li>
               </ul>
-              <button
-                onClick={() => setIsRepairModalOpen(true)}
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-              >
+              <button onClick={() => setIsRepairModalOpen(true)} className="e-btn-primary">
                 <Wrench className="mr-2 h-5 w-5" />
                 Solicitar reparación
               </button>
@@ -391,18 +379,18 @@ export default function HomePage() {
             <div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {repairProducts.map((p) => (
-                  <Link key={p.id} to={`/product/${p.id}`} className="group bg-gray-50 rounded-lg overflow-hidden border hover:shadow-md transition">
-                    <div className="aspect-square w-full bg-white">
+                  <Link key={p.id} to={`/product/${p.id}`} className="group e-card overflow-hidden">
+                    <div className="aspect-square w-full">
                       <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     </div>
                     <div className="p-2">
-                      <p className="text-xs text-gray-600 line-clamp-2">{p.name}</p>
+                      <p className="text-xs text-white/80 line-clamp-2">{p.name}</p>
                     </div>
                   </Link>
                 ))}
               </div>
               <div className="mt-4 text-right">
-                <Link to="/category/repair" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <Link to="/category/repair" className="inline-flex items-center text-sky-400 hover:text-sky-300 font-semibold">
                   Ver todo
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -413,48 +401,50 @@ export default function HomePage() {
       </section>
 
       {/* Modificación de firmware */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img
-                src="https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Modificación de firmware"
-                className="rounded-lg shadow-2xl"
-              />
+              <div className="e-card overflow-hidden">
+                <img
+                  src="https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                  alt="Modificación de firmware"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
             <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="e-heading text-3xl lg:text-4xl mb-6">
                 Modificación de Firmware
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="e-subtle text-lg mb-6">
                 Modificación profesional de firmware para mejorar las características de su automóvil:
               </p>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Aumento de potencia y par motor
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Optimización del consumo de combustible
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Eliminación de limitadores de velocidad
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Desactivación de sistemas EGR y DPF
                 </li>
-                <li className="flex items-center text-gray-700">
+                <li className="flex items-center text-white/80">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>
                   Adaptación a nuevos componentes
                 </li>
               </ul>
               <Link
                 to="/firmware-mod"
-                className="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                className="e-btn-primary"
               >
                 <Settings className="mr-2 h-5 w-5" />
                 Solicitar servicio
@@ -465,13 +455,13 @@ export default function HomePage() {
       </section>
 
       {/* О нас */}
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="e-heading text-3xl lg:text-4xl mb-4">
               Sobre Nosotros
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="e-subtle text-xl max-w-3xl mx-auto">
               ElatNeo es su socio de confianza para repuestos de automóviles de alta calidad. 
               Con años de experiencia en el sector, ofrecemos soluciones completas para el mantenimiento 
               y reparación de su vehículo.
@@ -479,38 +469,38 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+            <div className="text-center e-card p-8">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6 shadow-glow">
                 <Star className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Calidad Garantizada
               </h3>
-              <p className="text-gray-600">
+              <p className="text-white/80">
                 Todos nuestros productos provienen de fabricantes reconocidos y cuentan con garantía oficial.
               </p>
             </div>
-            
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+
+            <div className="text-center e-card p-8">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6 shadow-glow">
                 <Truck className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Envío Rápido
               </h3>
-              <p className="text-gray-600">
+              <p className="text-white/80">
                 Entrega en Madrid el mismo día, en España hasta 3 días hábiles.
               </p>
             </div>
-            
-            <div className="text-center">
-              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+
+            <div className="text-center e-card p-8">
+              <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6 shadow-glow">
                 <Shield className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+              <h3 className="text-xl font-semibold text-white mb-4">
                 Soporte Técnico
               </h3>
-              <p className="text-gray-600">
+              <p className="text-white/80">
                 Asesoramiento técnico especializado y servicio de reparación de componentes electrónicos.
               </p>
             </div>

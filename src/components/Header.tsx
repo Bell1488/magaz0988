@@ -18,7 +18,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-md border-b border-blue-100">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/5 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -27,37 +27,37 @@ export default function Header() {
           </Link>
 
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8">
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-lg mx-8">
             <div className="relative w-full">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar repuestos..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-12 pr-4 py-2 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
               />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 top-2.5 h-5 w-5 text-white/60" />
             </div>
           </form>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">
               Inicio
             </Link>
-            <Link to="/catalog" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/catalog" className="text-white/80 hover:text-white transition-colors">
               Catálogo
             </Link>
-            <Link to="/category/repair" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/category/repair" className="text-white/80 hover:text-white transition-colors">
               Servicio de Reparación
             </Link>
-            <Link to="/firmware-mod" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/firmware-mod" className="text-white/80 hover:text-white transition-colors">
               Modificación de firmware
             </Link>
-            <Link to="/blog" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/blog" className="text-white/80 hover:text-white transition-colors">
               Blog
             </Link>
-            <Link to="/cart" className="relative p-2 text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/cart" className="relative p-2 text-white/80 hover:text-white transition-colors">
               <ShoppingCart className="h-6 w-6" />
               {state.items.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -70,7 +70,7 @@ export default function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-gray-700"
+            className="md:hidden p-2 text-white"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -84,55 +84,55 @@ export default function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar repuestos..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
             />
-            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 top-2.5 h-5 w-5 text-white/60" />
           </div>
         </form>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
+        <div className="md:hidden bg-white/5 backdrop-blur-xl border-t border-white/10">
           <nav className="px-4 py-4 space-y-4">
             <Link
               to="/"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              className="block text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Inicio
             </Link>
             <Link
               to="/catalog"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              className="block text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Catálogo
             </Link>
             <Link
               to="/category/repair"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              className="block text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Servicio de Reparación
             </Link>
             <Link
               to="/firmware-mod"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              className="block text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Modificación de firmware
             </Link>
             <Link
               to="/blog"
-              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              className="block text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Blog
             </Link>
             <Link
               to="/cart"
-              className="flex items-center text-gray-700 hover:text-blue-600 transition-colors"
+              className="flex items-center text-white/80 hover:text-white transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />

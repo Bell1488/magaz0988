@@ -59,28 +59,28 @@ export default function CatalogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="bg-white shadow-sm">
+      <div className="backdrop-blur-xl bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="e-heading text-3xl lg:text-4xl mb-4">
               Catálogo de Productos
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="e-subtle text-xl mb-8">
               Encuentre los repuestos que necesita para su vehículo
             </p>
             
             {/* Search Bar */}
             <div className="max-w-md mx-auto">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
                 <input
                   type="text"
                   placeholder="Buscar categorías..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                 />
               </div>
             </div>
@@ -95,7 +95,7 @@ export default function CatalogPage() {
             <Link
               key={category.id}
               to={`/category/${category.id}`}
-              className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              className="group e-card overflow-hidden"
             >
               <div className="relative h-64">
                 <img
@@ -106,14 +106,14 @@ export default function CatalogPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                  <p className="text-blue-200">{category.productCount} productos disponibles</p>
+                  <p className="text-white/70">{category.productCount} productos disponibles</p>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-gray-600 mb-4">
+                <p className="e-subtle mb-4">
                   {category.description}
                 </p>
-                <div className="flex items-center text-blue-600 font-semibold">
+                <div className="flex items-center text-sky-400 font-semibold">
                   Ver productos
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </div>
@@ -125,9 +125,9 @@ export default function CatalogPage() {
         {/* Category Descriptions */}
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Neumáticos Description */}
-          <div className="bg-white rounded-xl p-8 shadow-lg">
+          <div className="e-card p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Neumáticos</h3>
-            <div className="space-y-4 text-gray-600">
+            <div className="space-y-4 text-white/80">
               <p>
                 Ofrecemos una amplia gama de neumáticos para todas las estaciones y condiciones de conducción:
               </p>
@@ -156,9 +156,9 @@ export default function CatalogPage() {
           </div>
 
           {/* AdBlue Description */}
-          <div className="bg-white rounded-xl p-8 shadow-lg">
+          <div className="e-card p-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Componentes AdBlue y SCR</h3>
-            <div className="space-y-4 text-gray-600">
+            <div className="space-y-4 text-white/80">
               <p>
                 Sistemas completos para la reducción de emisiones y cumplimiento de normativas ambientales:
               </p>
