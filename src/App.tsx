@@ -25,7 +25,7 @@ function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
           {!isAdminPage && <Header />}
           <main>
             <Routes>
