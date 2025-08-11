@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User, Star, Truck, Shield, Clock } from 'lucide-react';
 
@@ -208,6 +208,21 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
 
 export default function HomePage() {
   const [isRepairModalOpen, setIsRepairModalOpen] = useState(false);
+  const [repairProducts, setRepairProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadRepairProducts = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`);
+        const data = await res.json();
+        const repairs = data.filter((p: any) => p.category === 'repair').slice(0, 4);
+        setRepairProducts(repairs);
+      } catch (e) {
+        console.error('Error loading repair products', e);
+      }
+    };
+    loadRepairProducts();
+  }, []);
 
   return (
     <div>
@@ -374,11 +389,24 @@ export default function HomePage() {
               </button>
             </div>
             <div>
-              <img
-                src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Servicio de reparación"
-                className="rounded-lg shadow-2xl"
-              />
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {repairProducts.map((p) => (
+                  <Link key={p.id} to={`/product/${p.id}`} className="group bg-gray-50 rounded-lg overflow-hidden border hover:shadow-md transition">
+                    <div className="aspect-square w-full bg-white">
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </div>
+                    <div className="p-2">
+                      <p className="text-xs text-gray-600 line-clamp-2">{p.name}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-4 text-right">
+                <Link to="/category/repair" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                  Ver todo
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

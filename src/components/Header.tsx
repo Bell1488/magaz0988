@@ -48,6 +48,9 @@ export default function Header() {
             <Link to="/catalog" className="text-gray-700 hover:text-blue-600 transition-colors">
               Catálogo
             </Link>
+            <Link to="/category/repair" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Servicio de Reparación
+            </Link>
             <Link to="/firmware-mod" className="text-gray-700 hover:text-blue-600 transition-colors">
               Modificación de firmware
             </Link>
@@ -105,6 +108,13 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Catálogo
+            </Link>
+            <Link
+              to="/category/repair"
+              className="block text-gray-700 hover:text-blue-600 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Servicio de Reparación
             </Link>
             <Link
               to="/firmware-mod"

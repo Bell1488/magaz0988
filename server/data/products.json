@@ -498,5 +498,93 @@
       "Norma": "ISO 22241",
       "Aplicación": "SCR Euro 6"
     }
+  },
+  {
+    "id": "rep-001",
+    "name": "Mercedes Clase B y Clase A W245/W169 CVT ECU/TCM 722.8 - Reparación",
+    "brand": "MERCEDES",
+    "category": "repair",
+    "price": 249.99,
+    "oldPrice": null,
+    "description": "Reparación profesional de la unidad de transmisión CVT 722.8",
+    "fullDescription": "Servicio de reparación de ECU/TCM para transmisión CVT 722.8 en Mercedes Clase A W169 y Clase B W245. Diagnóstico, reemplazo de componentes defectuosos y pruebas en banco.",
+    "image": "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "images": [
+      "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800"
+    ],
+    "inStock": true,
+    "rating": 4.9,
+    "reviews": 41,
+    "specifications": {
+      "Modelos": "W245, W169",
+      "Caja": "CVT 722.8",
+      "Plazo": "1-3 días"
+    }
+  },
+  {
+    "id": "rep-002",
+    "name": "Mercedes W168 ECU/TCM A0335450432, A1685451532 - Reparación",
+    "brand": "MERCEDES",
+    "category": "repair",
+    "price": 229.99,
+    "oldPrice": null,
+    "description": "Reparación de ECU/TCM para Mercedes W168",
+    "fullDescription": "Servicio de reparación de unidades ECU/TCM con referencias A0335450432, A1685451532 y compatibles. Restauración de funcionamiento y pruebas.",
+    "image": "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "images": [
+      "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800"
+    ],
+    "inStock": true,
+    "rating": 4.8,
+    "reviews": 26,
+    "specifications": {
+      "Referencias": "A0335450432, A1685451532",
+      "Marca": "Mercedes-Benz",
+      "Plazo": "1-3 días"
+    }
+  },
+  {
+    "id": "rep-003",
+    "name": "Servicio Reparación VL381 8K0927155AF / 0AW927156G Audi A6, A4 Multitronic",
+    "brand": "AUDI",
+    "category": "repair",
+    "price": 259.99,
+    "oldPrice": null,
+    "description": "Reparación de unidad de control de transmisión VL381 (Multitronic)",
+    "fullDescription": "Servicio de reparación para unidades VL381 con referencias 8K0927155AF, 0AW927156G. Diagnóstico, reparación y pruebas en banco para Audi A4/A6 Multitronic.",
+    "image": "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "images": [
+      "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800"
+    ],
+    "inStock": true,
+    "rating": 4.9,
+    "reviews": 38,
+    "specifications": {
+      "Modelos": "Audi A4, A6",
+      "Transmisión": "Multitronic VL381",
+      "Plazo": "1-3 días"
+    }
+  },
+  {
+    "id": "rep-004",
+    "name": "0AW VL300 Unidad Control de Transmisión Audi A4, A6 01J927156JH - Reparación",
+    "brand": "AUDI",
+    "category": "repair",
+    "price": 259.99,
+    "oldPrice": null,
+    "description": "Reparación de unidad de control 0AW VL300",
+    "fullDescription": "Servicio de reparación de unidad de control de transmisión 0AW VL300 para Audi A4/A6 con referencia 01J927156JH. Sustitución de componentes y pruebas completas.",
+    "image": "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "images": [
+      "https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=800"
+    ],
+    "inStock": true,
+    "rating": 4.7,
+    "reviews": 22,
+    "specifications": {
+      "Modelos": "Audi A4, A6",
+      "Transmisión": "0AW VL300",
+      "Referencia": "01J927156JH"
+    }
   }
 ] 

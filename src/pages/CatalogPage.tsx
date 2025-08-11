@@ -31,6 +31,13 @@ export default function CatalogPage() {
         description: 'Sistemas de limpieza de gases de escape y componentes para cumplimiento de normativas Euro 6',
         image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
         productCount: 75
+      },
+      {
+        id: 'repair',
+        name: 'Servicio de Reparación',
+        description: 'Reparación profesional de ECUs/TCMs y módulos electrónicos (Mercedes, Audi, VW...)',
+        image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800',
+        productCount: 4
       }
     ];
     
@@ -83,7 +90,7 @@ export default function CatalogPage() {
 
       {/* Categories Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCategories.map((category) => (
             <Link
               key={category.id}

@@ -68,5 +68,12 @@
     "description": "Inyectores, bombas, sensores NOx y líquido AdBlue",
     "image": "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=400",
     "count": 2
+  },
+  {
+    "id": "repair",
+    "name": "Servicio de Reparación",
+    "description": "Reparación de ECUs/TCMs y módulos electrónicos: Mercedes, Audi, VW, etc.",
+    "image": "https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "count": 4
   }
 ] 

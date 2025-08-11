@@ -15,7 +15,8 @@ const categoryNames: Record<string, string> = {
   consumables: 'Consumibles',
   tools: 'Herramientas y equipos',
   tires: 'Neumáticos',
-  adblue: 'Componentes AdBlue y SCR'
+  adblue: 'Componentes AdBlue y SCR',
+  repair: 'Servicio de Reparación'
 };
 
 export default function CategoryPage() {
