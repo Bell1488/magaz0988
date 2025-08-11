@@ -39,13 +39,6 @@ export default function CatalogPage() {
         image: '/diagnostic.png',
         productCount: 4
       }
-      {
-        id: 'repair',
-        name: 'Servicio de Reparación',
-        description: 'Reparación profesional de ECUs/TCMs y módulos electrónicos (Mercedes, Audi, VW...)',
-        image: 'https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=800',
-        productCount: 4
-      }
     ];
     
     setCategories(mainCategories);
