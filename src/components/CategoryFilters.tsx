@@ -291,12 +291,12 @@ export default function CategoryFilters({ isOpen, onClose, categoryId, onFilterC
   };
 
   return (
-    <div className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-      <div className={`absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-xl transition-transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div className={`fixed inset-0 bg-black/60 z-50 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`absolute right-0 top-0 bottom-0 w-full max-w-md e-card backdrop-blur-xl transition-transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Filtros</h3>
-            <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-700">
+            <h3 className="text-xl font-bold text-white">Filtros</h3>
+            <button onClick={onClose} className="p-2 text-white/70 hover:text-white">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -305,22 +305,15 @@ export default function CategoryFilters({ isOpen, onClose, categoryId, onFilterC
             <>
               <div className="mb-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">
-                    {getActiveFilterCount()} filtros aplicados
-                  </span>
-                  <button
-                    onClick={clearFilters}
-                    className="text-sm text-blue-600 hover:text-blue-800"
-                  >
-                    Limpiar filtros
-                  </button>
+                  <span className="text-sm text-white/70">{getActiveFilterCount()} filtros aplicados</span>
+                  <button onClick={clearFilters} className="text-sm text-sky-400 hover:text-sky-300">Limpiar filtros</button>
                 </div>
               </div>
 
               <div className="space-y-6">
                 {filters.map((group) => (
-                  <div key={group.id} className="border-b border-gray-200 pb-6">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-4">{group.name}</h4>
+                  <div key={group.id} className="border-b border-white/10 pb-6">
+                    <h4 className="text-lg font-semibold text-white mb-4">{group.name}</h4>
                     <div className="space-y-2">
                       {group.options.map((option) => (
                         <label key={option.id} className="flex items-center">
@@ -328,9 +321,9 @@ export default function CategoryFilters({ isOpen, onClose, categoryId, onFilterC
                             type="checkbox"
                             checked={activeFilters[group.id]?.includes(option.id) || false}
                             onChange={() => handleFilterChange(group.id, option.id)}
-                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            className="h-4 w-4 text-blue-500 bg-white/10 border-white/30 rounded focus:ring-blue-500"
                           />
-                          <span className="ml-3 text-gray-700">{option.name}</span>
+                          <span className="ml-3 text-white/80">{option.name}</span>
                         </label>
                       ))}
                     </div>
@@ -339,17 +332,12 @@ export default function CategoryFilters({ isOpen, onClose, categoryId, onFilterC
               </div>
 
               <div className="mt-8">
-                <button
-                  onClick={onClose}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                >
-                  Aplicar filtros
-                </button>
+                <button onClick={onClose} className="w-full e-btn-primary py-3">Aplicar filtros</button>
               </div>
             </>
           ) : (
             <div className="text-center py-8">
-              <p className="text-gray-600">No hay filtros disponibles para esta categoría</p>
+              <p className="text-white/80">No hay filtros disponibles para esta categoría</p>
             </div>
           )}
         </div>

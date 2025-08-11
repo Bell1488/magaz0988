@@ -252,11 +252,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="e-card overflow-hidden">
-              <img
-                src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt="Repuestos de automóviles"
-                className="w-full h-full object-cover"
-              />
+              <img src="/mainpage.png" alt="ElatNeo" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -279,11 +275,7 @@ export default function HomePage() {
             {/* Reparación */}
             <Link to="/category/repair" className="group e-card overflow-hidden order-1">
               <div className="relative h-60">
-                <img
-                  src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                  alt="Servicio de Reparación"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                <img src="/diagnostic.png" alt="Servicio de Reparación" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 text-white">
                   <h3 className="text-2xl font-bold mb-1">Servicio de Reparación</h3>
@@ -295,11 +287,7 @@ export default function HomePage() {
             {/* Neumáticos */}
             <Link to="/category/tires" className="group e-card overflow-hidden order-2">
               <div className="relative h-60">
-                <img
-                  src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                  alt="Neumáticos"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                <img src="/neumaticos.png" alt="Neumáticos" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-5 left-5 text-white">
                   <h3 className="text-2xl font-bold mb-1">Neumáticos</h3>
@@ -311,11 +299,7 @@ export default function HomePage() {
             {/* AdBlue */}
             <Link to="/category/adblue" className="group e-card overflow-hidden order-3">
               <div className="relative h-60">
-                <img
-                  src="https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                  alt="Componentes AdBlue y SCR"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+                <img src="/componentes.png" alt="Componentes AdBlue y SCR" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-5 left-5 text-white">
                   <h3 className="text-2xl font-bold mb-1">Componentes AdBlue y SCR</h3>
@@ -455,11 +439,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="e-card overflow-hidden">
-                <img
-                  src="https://images.pexels.com/photos/3642618/pexels-photo-3642618.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                  alt="Modificación de firmware"
-                  className="w-full h-full object-cover"
-                />
+                <img src="/Modificación de Firmware.png" alt="Modificación de firmware" className="w-full h-full object-cover" />
               </div>
             </div>
             <div>
@@ -558,7 +538,17 @@ export default function HomePage() {
       </section>
 
       {/* Поп-ап para la solicitud de reparación */}
-      <RepairModal isOpen={isRepairModalOpen} onClose={() => setIsRepairModalOpen(false)} />
+      {/* Стеклянная версия модалки для главной */}
+      {isRepairModalOpen && (
+        <div className="fixed inset-0 z-50">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setIsRepairModalOpen(false)} />
+          <div className="relative z-10 max-w-2xl mx-auto p-4">
+            <div className="e-card">
+              <RepairModal isOpen={isRepairModalOpen} onClose={() => setIsRepairModalOpen(false)} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

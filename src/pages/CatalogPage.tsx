@@ -22,16 +22,23 @@ export default function CatalogPage() {
         id: 'tires',
         name: 'Neumáticos',
         description: 'Neumáticos de verano, invierno y todo tiempo para todas las marcas de vehículos',
-        image: 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800',
+        image: '/neumaticos.png',
         productCount: 150
       },
       {
         id: 'adblue',
         name: 'Componentes AdBlue y SCR',
         description: 'Sistemas de limpieza de gases de escape y componentes para cumplimiento de normativas Euro 6',
-        image: 'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800',
+        image: '/componentes.png',
         productCount: 75
       },
+      {
+        id: 'repair',
+        name: 'Servicio de Reparación',
+        description: 'Reparación profesional de ECUs/TCMs y módulos electrónicos (Mercedes, Audi, VW...)',
+        image: '/diagnostic.png',
+        productCount: 4
+      }
       {
         id: 'repair',
         name: 'Servicio de Reparación',

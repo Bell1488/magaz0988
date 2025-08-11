@@ -198,7 +198,7 @@ export default function CategoryPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-            <div key={product.id} className="e-card hover:shadow-glow transition-all duration-300 overflow-hidden">
+            <div key={product.id} className="e-card hover:shadow-glow transition-all duration-300 overflow-hidden flex flex-col">
               <div className="relative">
                 <Link to={`/product/${product.id}`}>
                   <img
@@ -219,7 +219,7 @@ export default function CategoryPage() {
                 </Link>
               </div>
               
-              <div className="p-6">
+              <div className="p-6 flex-1 flex flex-col">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-sky-400 font-medium">{product.brand}</span>
                   <div className="flex items-center">
@@ -238,39 +238,40 @@ export default function CategoryPage() {
                 
                 <p className="text-white/80 text-sm mb-4">{product.description}</p>
                 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-white">
-                      €{product.price.toLocaleString()}
-                    </span>
-                    {product.oldPrice && (
-                      <span className="text-lg text-white/60 line-through">
-                        €{product.oldPrice.toLocaleString()}
+                {categoryId !== 'repair' ? (
+                  <div className="flex items-center justify-between mt-auto">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-2xl font-bold text-white">
+                        €{product.price.toLocaleString()}
                       </span>
-                    )}
+                      {product.oldPrice && (
+                        <span className="text-lg text-white/60 line-through">
+                          €{product.oldPrice.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <button
+                      onClick={() => addToCart(product)}
+                      disabled={!product.inStock}
+                      className={`flex items-center px-4 py-2 rounded-lg transition-all duration-300 ${
+                        addingToCart === product.id ? 'scale-95 bg-green-600 text-white' : 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
+                      }`}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      {addingToCart === product.id ? '¡Añadido!' : product.inStock ? 'Añadir' : 'Sin stock'}
+                    </button>
                   </div>
-                  
-                  <button
-                    onClick={() => addToCart(product)}
-                    disabled={categoryId !== 'repair' && !product.inStock}
-                    className={`flex items-center px-4 py-2 rounded-lg transition-all duration-300 ${
-                      categoryId === 'repair'
-                        ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
-                        : addingToCart === product.id
-                          ? 'scale-95 bg-green-600 text-white'
-                          : 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
-                    }`}
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    {categoryId === 'repair'
-                      ? 'Solicitar reparación'
-                      : addingToCart === product.id
-                        ? '¡Añadido!'
-                        : product.inStock
-                          ? 'Añadir'
-                          : 'Sin stock'}
-                  </button>
-                </div>
+                ) : (
+                  <div className="mt-auto">
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400"
+                    >
+                      Solicitar reparación
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -290,6 +291,18 @@ export default function CategoryPage() {
             >
               Volver al catálogo
             </Link>
+          </div>
+        )}
+
+        {categoryId === 'repair' && (
+          <div className="mt-10">
+            <div className="e-card p-6">
+              <h3 className="text-white font-semibold text-lg mb-2">Tu reparación, fácil y sin rodeos</h3>
+              <p className="text-white/80 text-sm">
+                En ElatNeo puedes encargarnos la reparación de las unidades de arriba. Elige la pieza y pulsa «Solicitar reparación» para enviarnos el módulo por mensajería
+                o, si te pilla cerca, pásate por nuestro taller en C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante. Rellenas el formulario y te llamamos enseguida para coordinarlo.
+              </p>
+            </div>
           </div>
         )}
       </div>

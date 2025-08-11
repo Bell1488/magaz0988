@@ -12,19 +12,19 @@ export default function Footer() {
               <img src="/logo_elat.svg" alt="ElatNeo Logo" className="h-10 w-auto" />
             </div>
             <p className="text-blue-200 mb-4">
-              Repuestos de calidad para todas las marcas de coches.
-              Envío rápido por toda España.
+              Tu taller y tienda de confianza: piezas de calidad y servicio técnico de primera.
+              Enviamos a toda España con plazos muy ágiles.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Enlaces rápidos</h3>
+            <h3 className="text-lg font-semibold mb-4">Enlaces útiles</h3>
             <ul className="space-y-2">
               <li><a href="/catalog" className="text-blue-200 hover:text-white transition-colors">Catálogo</a></li>
-              <li><a href="/delivery" className="text-blue-200 hover:text-white transition-colors">Envío y pago</a></li>
-              <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Sobre nosotros</a></li>
-              <li><a href="#" className="text-blue-200 hover:text-white transition-colors">Garantía</a></li>
+              <li><a href="/category/repair" className="text-blue-200 hover:text-white transition-colors">Servicio de reparación</a></li>
+              <li><a href="/firmware-mod" className="text-blue-200 hover:text-white transition-colors">Modificación de firmware</a></li>
+              <li><a href="/delivery" className="text-blue-200 hover:text-white transition-colors">Envíos y métodos de pago</a></li>
             </ul>
           </div>
 
@@ -53,16 +53,14 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
-                <span className="text-blue-200">Madrid, Calle Gran Vía, 123</span>
+                <span className="text-blue-200">C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-blue-800 mt-8 pt-8 text-center">
-          <p className="text-blue-200">
-            © 2025 ElatNeo. Todos los derechos reservados.
-          </p>
+          <p className="text-blue-200">© 2025 ElatNeo. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
