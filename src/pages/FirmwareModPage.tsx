@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Upload, Send, FileText, Clock, CreditCard, CheckCircle } from 'lucide-react';
+import UiSelect from '../components/UiSelect';
 
 const carBrands = [
   { id: 'mercedes', name: 'Mercedes-Benz' },
@@ -297,69 +298,49 @@ export default function FirmwareModPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Marca del vehículo *
                 </label>
-                <select
+                <UiSelect
                   value={selectedBrand}
-                  onChange={handleBrandChange}
-                  required
-                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
-                >
-                  <option value="">Seleccionar marca</option>
-                  {carBrands.map(brand => (
-                    <option key={brand.id} value={brand.id}>{brand.name}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setSelectedBrand(v)}
+                  options={carBrands}
+                  placeholder="Seleccionar marca"
+                />
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Modelo *
                 </label>
-                <select
+                <UiSelect
                   value={selectedModel}
-                  onChange={handleModelChange}
-                  required
+                  onChange={(v) => setSelectedModel(v)}
+                  options={selectedBrand ? (carModels as any)[selectedBrand] : []}
+                  placeholder="Seleccionar modelo"
                   disabled={!selectedBrand}
-                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60 disabled:opacity-60"
-                >
-                  <option value="">Seleccionar modelo</option>
-                  {selectedBrand && carModels[selectedBrand as keyof typeof carModels].map(model => (
-                    <option key={model.id} value={model.id}>{model.name}</option>
-                  ))}
-                </select>
+                />
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Año de fabricación *
                 </label>
-                <select
+                <UiSelect
                   value={selectedYear}
-                  onChange={handleYearChange}
-                  required
-                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
-                >
-                  <option value="">Seleccionar año</option>
-                  {yearOptions.map(year => (
-                    <option key={year.id} value={year.id}>{year.name}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setSelectedYear(v)}
+                  options={yearOptions}
+                  placeholder="Seleccionar año"
+                />
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tipo de motor *
                 </label>
-                <select
+                <UiSelect
                   value={selectedEngineType}
-                  onChange={handleEngineTypeChange}
-                  required
-                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
-                >
-                  <option value="">Seleccionar tipo</option>
-                  {engineTypes.map(type => (
-                    <option key={type.id} value={type.id}>{type.name}</option>
-                  ))}
-                </select>
+                  onChange={(v) => setSelectedEngineType(v)}
+                  options={engineTypes}
+                  placeholder="Seleccionar tipo"
+                />
               </div>
             </div>
             

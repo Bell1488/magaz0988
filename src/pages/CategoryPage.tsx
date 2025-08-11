@@ -145,16 +145,6 @@ export default function CategoryPage() {
               </nav>
               <h1 className="e-heading text-3xl">{categoryName}</h1>
               <p className="e-subtle mt-2">{products.length} productos en la categoría</p>
-              {categoryId === 'repair' && (
-                <div className="mt-6 e-card p-6">
-                  <h3 className="text-white font-semibold text-lg mb-2">Servicio de reparación de piezas electrónicas</h3>
-                  <p className="text-white/80">
-                    En ElatNeo puede solicitar la reparación de las piezas indicadas arriba. Después de elegir la pieza necesaria, puede enviar la pieza a nuestro taller
-                    o venir personalmente. Para enviar la pieza, pulse el botón «Solicitar reparación», complete el formulario y nos pondremos en contacto con usted en breve.
-                    Si se encuentra en la región de Alicante, le esperamos en C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante, Spain, donde puede tramitar cualquier servicio en persona.
-                  </p>
-                </div>
-              )}
             </div>
             
             <div className="flex items-center space-x-4">
@@ -301,6 +291,18 @@ export default function CategoryPage() {
               <p className="text-white/80 text-sm">
                 En ElatNeo puedes encargarnos la reparación de las unidades de arriba. Elige la pieza y pulsa «Solicitar reparación» para enviarnos el módulo por mensajería
                 o, si te pilla cerca, pásate por nuestro taller en C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante. Rellenas el formulario y te llamamos enseguida para coordinarlo.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {categoryId === 'repair' && (
+          <div className="mt-10">
+            <div className="e-card p-6">
+              <h3 className="text-white font-semibold text-lg mb-2">Servicio de reparación de piezas electrónicas</h3>
+              <p className="text-white/80">
+                En ElatNeo puedes encargarnos la reparación de las unidades de arriba. Elige la pieza y pulsa «Solicitar reparación» para enviarnos el módulo por mensajería o,
+                si te pilla cerca, pásate por nuestro taller en C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante. Te contactamos en seguida para cuadrarlo.
               </p>
             </div>
           </div>

@@ -139,7 +139,7 @@ export default function BlogPage() {
               <article key={post.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div className="relative h-48">
                   <img
-                    src={post.image}
+                    src={post.image && post.image.startsWith('/uploads') ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${post.image}` : post.image}
                     alt={post.title}
                     className="w-full h-full object-cover"
                   />

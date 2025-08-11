@@ -119,7 +119,7 @@ export default function BlogPostPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article className="bg-white rounded-xl shadow-lg overflow-hidden">
           <img
-            src={post.image}
+            src={post.image && post.image.startsWith('/uploads') ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${post.image}` : post.image}
             alt={post.title}
             className="w-full h-64 lg:h-96 object-cover"
           />
