@@ -73,6 +73,27 @@ export default function FirmwareModPage() {
     phone: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  
+  const BASE_PRICE = 250;
+  const OPTION_PRICE = 50;
+  const firmwareOptions = [
+    'DPF', 'EGR', 'TVA', 'LAMBDA', 'MAF', 'FLAPS', 'START/STOP', 'ADBLUE', 'READINESS'
+  ] as const;
+  type FirmwareOption = typeof firmwareOptions[number];
+  const [optionsState, setOptionsState] = useState<Record<FirmwareOption, boolean>>({
+    DPF: false,
+    EGR: false,
+    TVA: false,
+    LAMBDA: false,
+    MAF: false,
+    FLAPS: false,
+    'START/STOP': false,
+    ADBLUE: false,
+    READINESS: false,
+  });
+
+  const enabledCount = Object.values(optionsState).filter(Boolean).length;
+  const totalPrice = BASE_PRICE + OPTION_PRICE * enabledCount;
 
   const handleBrandChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBrand(e.target.value);
@@ -123,6 +144,8 @@ export default function FirmwareModPage() {
       formData.append('customerName', contactInfo.name);
       formData.append('customerEmail', contactInfo.email);
       formData.append('customerPhone', contactInfo.phone);
+      formData.append('options', JSON.stringify(optionsState));
+      formData.append('totalPrice', String(totalPrice));
       
       if (file) {
         formData.append('file', file);
@@ -149,19 +172,19 @@ export default function FirmwareModPage() {
 
   if (formSubmitted) {
     return (
-      <div className="min-h-screen bg-gray-50 py-16">
+      <div className="min-h-screen py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Send className="h-8 w-8 text-green-600" />
+          <div className="e-card p-8 text-center">
+            <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Send className="h-8 w-8 text-green-300" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">¡Solicitud enviada con éxito!</h2>
-            <p className="text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold text-white mb-4">¡Solicitud enviada con éxito!</h2>
+            <p className="text-white/80 mb-6">
               Hemos recibido tu solicitud de modificación de firmware. Nuestro equipo técnico la analizará y se pondrá en contacto contigo en breve para confirmar la posibilidad de realizar el servicio y proporcionar información sobre el pago.
             </p>
             <button
               onClick={() => setFormSubmitted(false)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="e-btn-primary"
             >
               Enviar otra solicitud
             </button>
@@ -172,77 +195,101 @@ export default function FirmwareModPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Modificación de Firmware</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h1 className="e-heading text-3xl mb-4">Modificación de Firmware</h1>
+          <p className="e-subtle text-xl max-w-3xl mx-auto">
             Servicio remoto para modificación de proshivos de bloques de control del motor y transmisión automática.
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Cómo funciona nuestro servicio:</h2>
+        <div className="e-card p-8 mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Cómo funciona nuestro servicio:</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="border border-gray-200 rounded-lg p-6 flex">
+            <div className="border border-white/10 rounded-lg p-6 flex bg-white/5">
               <div className="mr-4">
                 <FileText className="h-10 w-10 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-blue-600 mb-3">1. Envío de solicitud</h3>
-                <p className="text-gray-700">
+                <h3 className="text-xl font-semibold text-sky-400 mb-3">1. Envío de solicitud</h3>
+                <p className="text-white/80">
                   Completa el formulario con los datos de tu vehículo, describe los cambios deseados y adjunta el archivo de firmware original.
                 </p>
               </div>
             </div>
             
-            <div className="border border-gray-200 rounded-lg p-6 flex">
+            <div className="border border-white/10 rounded-lg p-6 flex bg-white/5">
               <div className="mr-4">
                 <CheckCircle className="h-10 w-10 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-blue-600 mb-3">2. Verificación técnica</h3>
-                <p className="text-gray-700">
+                <h3 className="text-xl font-semibold text-sky-400 mb-3">2. Verificación técnica</h3>
+                <p className="text-white/80">
                   Nuestros especialistas analizan tu solicitud y confirman la viabilidad de las modificaciones solicitadas.
                 </p>
               </div>
             </div>
             
-            <div className="border border-gray-200 rounded-lg p-6 flex">
+            <div className="border border-white/10 rounded-lg p-6 flex bg-white/5">
               <div className="mr-4">
                 <CreditCard className="h-10 w-10 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-blue-600 mb-3">3. Pago del servicio</h3>
-                <p className="text-gray-700">
+                <h3 className="text-xl font-semibold text-sky-400 mb-3">3. Pago del servicio</h3>
+                <p className="text-white/80">
                   Una vez confirmada la viabilidad, recibirás un enlace para realizar el pago seguro del servicio.
                 </p>
               </div>
             </div>
             
-            <div className="border border-gray-200 rounded-lg p-6 flex">
+            <div className="border border-white/10 rounded-lg p-6 flex bg-white/5">
               <div className="mr-4">
                 <Clock className="h-10 w-10 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-blue-600 mb-3">4. Entrega rápida</h3>
-                <p className="text-gray-700">
+                <h3 className="text-xl font-semibold text-sky-400 mb-3">4. Entrega rápida</h3>
+                <p className="text-white/80">
                   En 20-30 minutos después de confirmar el pago, recibirás tu archivo modificado listo para instalar.
                 </p>
               </div>
             </div>
           </div>
           
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-6">
-            <p className="text-gray-700">
+          <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+            <p className="text-white/80">
               <strong>Nota importante:</strong> Nuestro servicio está especializado en la modificación de firmware para bloques de control del motor (ECU) y transmisiones automáticas (TCU). Trabajamos con la mayoría de marcas y modelos europeos, asiáticos y americanos.
             </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Solicita tu modificación personalizada</h2>
+        <div className="e-card p-8">
+          <h2 className="text-2xl font-bold text-white mb-6">Solicita tu modificación personalizada</h2>
+
+          {/* Pricing controls - switches like screenshot */}
+          <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left column */}
+              <div className="space-y-3">
+                {(['DPF','EGR','TVA','LAMBDA','MAF'] as FirmwareOption[]).map(key => (
+                  <OptionSwitch key={key} label={key} checked={optionsState[key]} onChange={(v)=>setOptionsState(s=>({...s,[key]:v}))} />
+                ))}
+              </div>
+              {/* Right column */}
+              <div className="space-y-3">
+                {(['FLAPS','START/STOP','ADBLUE','READINESS'] as FirmwareOption[]).map(key => (
+                  <OptionSwitch key={key} label={key} checked={optionsState[key]} onChange={(v)=>setOptionsState(s=>({...s,[key]:v}))} />
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-4 py-3">
+              <div className="text-white/80">
+                Precio base: <span className="font-semibold text-white">€{BASE_PRICE}</span> · Opciones: {enabledCount} × €{OPTION_PRICE}
+              </div>
+              <div className="text-2xl font-extrabold text-white">Total: €{totalPrice}</div>
+            </div>
+          </div>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -254,7 +301,7 @@ export default function FirmwareModPage() {
                   value={selectedBrand}
                   onChange={handleBrandChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                 >
                   <option value="">Seleccionar marca</option>
                   {carBrands.map(brand => (
@@ -272,7 +319,7 @@ export default function FirmwareModPage() {
                   onChange={handleModelChange}
                   required
                   disabled={!selectedBrand}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60 disabled:opacity-60"
                 >
                   <option value="">Seleccionar modelo</option>
                   {selectedBrand && carModels[selectedBrand as keyof typeof carModels].map(model => (
@@ -289,7 +336,7 @@ export default function FirmwareModPage() {
                   value={selectedYear}
                   onChange={handleYearChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                 >
                   <option value="">Seleccionar año</option>
                   {yearOptions.map(year => (
@@ -306,7 +353,7 @@ export default function FirmwareModPage() {
                   value={selectedEngineType}
                   onChange={handleEngineTypeChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                 >
                   <option value="">Seleccionar tipo</option>
                   {engineTypes.map(type => (
@@ -325,7 +372,7 @@ export default function FirmwareModPage() {
                 value={ecuType}
                 onChange={handleEcuTypeChange}
                 placeholder="Ej: Bosch EDC17C46, Continental SID310, etc."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                 className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
               />
             </div>
             
@@ -347,14 +394,14 @@ export default function FirmwareModPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Archivo de firmware actual (opcional)
               </label>
-              <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+               <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/20 border-dashed rounded-lg cursor-pointer bg-white/5 hover:bg-white/10">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <Upload className="w-10 h-10 text-gray-400" />
-                    <p className="mb-2 text-sm text-gray-500">
+                    <Upload className="w-10 h-10 text-white/60" />
+                    <p className="mb-2 text-sm text-white/80">
                       <span className="font-semibold">Haz clic para subir</span> o arrastra y suelta
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-white/70">
                       BIN, HEX, o archivos comprimidos (máx. 10MB)
                     </p>
                   </div>
@@ -367,14 +414,14 @@ export default function FirmwareModPage() {
                 </label>
               </div>
               {file && (
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="mt-2 text-sm text-white/80">
                   Archivo seleccionado: {file.name}
                 </p>
               )}
             </div>
             
-            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Información de contacto</h3>
+            <div className="bg-white/5 p-6 rounded-lg border border-white/10">
+              <h3 className="text-lg font-semibold text-white mb-4">Información de contacto</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -387,7 +434,7 @@ export default function FirmwareModPage() {
                     value={contactInfo.name}
                     onChange={handleContactChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                   />
                 </div>
                 
@@ -401,7 +448,7 @@ export default function FirmwareModPage() {
                     value={contactInfo.phone}
                     onChange={handleContactChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                   />
                 </div>
                 
@@ -415,23 +462,41 @@ export default function FirmwareModPage() {
                     value={contactInfo.email}
                     onChange={handleContactChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/60"
                   />
                 </div>
               </div>
             </div>
             
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Enviar solicitud
-              </button>
+            <div className="flex items-center justify-between">
+              <div className="text-white/80">
+                Total estimado: <span className="text-2xl font-extrabold text-white">€{totalPrice}</span>
+              </div>
+              <button type="submit" className="e-btn-primary">Enviar solicitud</button>
             </div>
           </form>
         </div>
       </div>
+    </div>
+  );
+}
+
+// UI компонента переключателя «ON/OFF» как на скриншоте
+function OptionSwitch({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean)=>void }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-white text-lg font-semibold mr-4">{label}</span>
+      <button
+        type="button"
+        onClick={() => onChange(!checked)}
+        className={`relative w-40 h-10 rounded-md overflow-hidden border ${checked ? 'border-green-400' : 'border-white/20'} bg-white/10`}
+        aria-pressed={checked}
+      >
+        <div className="absolute inset-0 grid grid-cols-2">
+          <div className={`flex items-center justify-center text-sm font-bold ${checked ? 'bg-green-500 text-white' : 'bg-white/10 text-white/60'}`}>ON</div>
+          <div className={`flex items-center justify-center text-sm font-bold ${!checked ? 'bg-gray-500 text-white' : 'bg-white/10 text-white/60'}`}>OFF</div>
+        </div>
+      </button>
     </div>
   );
 }

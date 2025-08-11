@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Filter, SlidersHorizontal, Star, ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CategoryFilters from '../components/CategoryFilters';
+import RepairRequestModal from '../components/RepairRequestModal';
 
 // Названия категорий
 const categoryNames: Record<string, string> = {
@@ -29,6 +30,8 @@ export default function CategoryPage() {
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRepairModalOpen, setIsRepairModalOpen] = useState(false);
+  const [selectedRepairPart, setSelectedRepairPart] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setLoading(true);
@@ -104,6 +107,11 @@ export default function CategoryPage() {
   }, [products, activeFilters]);
 
   const addToCart = async (product: any) => {
+    if (categoryId === 'repair') {
+      setSelectedRepairPart(product.name);
+      setIsRepairModalOpen(true);
+      return;
+    }
     setAddingToCart(product.id);
     dispatch({
       type: 'ADD_ITEM',
@@ -137,6 +145,16 @@ export default function CategoryPage() {
               </nav>
               <h1 className="e-heading text-3xl">{categoryName}</h1>
               <p className="e-subtle mt-2">{products.length} productos en la categoría</p>
+              {categoryId === 'repair' && (
+                <div className="mt-6 e-card p-6">
+                  <h3 className="text-white font-semibold text-lg mb-2">Servicio de reparación de piezas electrónicas</h3>
+                  <p className="text-white/80">
+                    En ElatNeo puede solicitar la reparación de las piezas indicadas arriba. Después de elegir la pieza necesaria, puede enviar la pieza a nuestro taller
+                    o venir personalmente. Para enviar la pieza, pulse el botón «Solicitar reparación», complete el formulario y nos pondremos en contacto con usted en breve.
+                    Si se encuentra en la región de Alicante, le esperamos en C/ de Garcia Gutierrez, 3, 03013 Alacant, Alicante, Spain, donde puede tramitar cualquier servicio en persona.
+                  </p>
+                </div>
+              )}
             </div>
             
             <div className="flex items-center space-x-4">
@@ -234,13 +252,23 @@ export default function CategoryPage() {
                   
                   <button
                     onClick={() => addToCart(product)}
-                    disabled={!product.inStock}
-                    className={`flex items-center px-4 py-2 rounded-lg transition-all duration-300 disabled:bg-gray-600 disabled:cursor-not-allowed ${
-                      addingToCart === product.id ? 'scale-95 bg-green-600 text-white' : 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
+                    disabled={categoryId !== 'repair' && !product.inStock}
+                    className={`flex items-center px-4 py-2 rounded-lg transition-all duration-300 ${
+                      categoryId === 'repair'
+                        ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
+                        : addingToCart === product.id
+                          ? 'scale-95 bg-green-600 text-white'
+                          : 'bg-gradient-to-r from-blue-600 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400'
                     }`}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    {addingToCart === product.id ? '¡Añadido!' : product.inStock ? 'Añadir' : 'Sin stock'}
+                    {categoryId === 'repair'
+                      ? 'Solicitar reparación'
+                      : addingToCart === product.id
+                        ? '¡Añadido!'
+                        : product.inStock
+                          ? 'Añadir'
+                          : 'Sin stock'}
                   </button>
                 </div>
               </div>
@@ -265,6 +293,15 @@ export default function CategoryPage() {
           </div>
         )}
       </div>
+
+      {/* Repair modal for repair category */}
+      {categoryId === 'repair' && (
+        <RepairRequestModal
+          isOpen={isRepairModalOpen}
+          onClose={() => setIsRepairModalOpen(false)}
+          defaultPartName={selectedRepairPart}
+        />
+      )}
     </div>
   );
 }

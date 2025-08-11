@@ -275,25 +275,25 @@ export default function HomePage() {
             <Link to="/catalog" className="hidden md:inline-flex e-btn-primary">Ver todo el catálogo</Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-6">
-            {/* Reparación (высокая карточка) */}
-            <Link to="/category/repair" className="group e-card overflow-hidden md:row-span-2 order-3 md:order-1">
-              <div className="relative h-64 md:h-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Reparación */}
+            <Link to="/category/repair" className="group e-card overflow-hidden order-1">
+              <div className="relative h-60">
                 <img
                   src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1200"
                   alt="Servicio de Reparación"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">Servicio de Reparación</h3>
-                  <p className="text-white/80">ECU/TCM y módulos electrónicos. Diagnóstico, reparación, pruebas.</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-5 left-5 right-5 text-white">
+                  <h3 className="text-2xl font-bold mb-1">Servicio de Reparación</h3>
+                  <p className="text-white/80 text-sm">ECU/TCM y módulos electrónicos. Diagnóstico, reparación, pruebas.</p>
                 </div>
               </div>
             </Link>
 
             {/* Neumáticos */}
-            <Link to="/category/tires" className="group e-card overflow-hidden order-1">
+            <Link to="/category/tires" className="group e-card overflow-hidden order-2">
               <div className="relative h-60">
                 <img
                   src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1200"
@@ -309,7 +309,7 @@ export default function HomePage() {
             </Link>
 
             {/* AdBlue */}
-            <Link to="/category/adblue" className="group e-card overflow-hidden order-2">
+            <Link to="/category/adblue" className="group e-card overflow-hidden order-3">
               <div className="relative h-60">
                 <img
                   src="https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=1200"
