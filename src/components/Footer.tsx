@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <img src="/logo_elat.svg" alt="ElatNeo Logo" className="h-10 w-auto" />
+              <img src="/elat-logo-final.png" alt="ElatNeo" className="h-10 w-auto" />
             </div>
             <p className="text-blue-200 mb-4">
               Tu taller y tienda de confianza: piezas de calidad y servicio técnico de primera.

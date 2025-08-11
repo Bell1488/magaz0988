@@ -36,7 +36,7 @@ export default function CatalogPage() {
         id: 'repair',
         name: 'Servicio de Reparación',
         description: 'Reparación profesional de ECUs/TCMs y módulos electrónicos (Mercedes, Audi, VW...)',
-        image: '/diagnostic.png',
+        image: '/deagnostic.png',
         productCount: 4
       }
     ];
@@ -126,7 +126,7 @@ export default function CatalogPage() {
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Neumáticos Description */}
           <div className="e-card p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Neumáticos</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Neumáticos</h3>
             <div className="space-y-4 text-white/80">
               <p>
                 Ofrecemos una amplia gama de neumáticos para todas las estaciones y condiciones de conducción:
@@ -157,7 +157,7 @@ export default function CatalogPage() {
 
           {/* AdBlue Description */}
           <div className="e-card p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Componentes AdBlue y SCR</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Componentes AdBlue y SCR</h3>
             <div className="space-y-4 text-white/80">
               <p>
                 Sistemas completos para la reducción de emisiones y cumplimiento de normativas ambientales:

@@ -381,8 +381,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Cómo trabajamos (timeline) */}
+      {/* Modificación de firmware */}
       <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="e-card overflow-hidden">
+                <img src="/Modificación de Firmware.png" alt="Modificación de firmware" className="w-full h-full object-cover" />
+              </div>
+            </div>
+            <div>
+              <h2 className="e-heading text-3xl lg:text-4xl mb-6">Modificación de Firmware</h2>
+              <p className="e-subtle text-lg mb-6">Modificación profesional de firmware para mejorar las características de su automóvil:</p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center text-white/80"><div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>Aumento de potencia y par motor</li>
+                <li className="flex items-center text-white/80"><div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>Optimización del consumo de combustible</li>
+                <li className="flex items-center text-white/80"><div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>Eliminación de limitadores de velocidad</li>
+                <li className="flex items-center text-white/80"><div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>Desactivación de sistemas EGR y DPF</li>
+                <li className="flex items-center text-white/80"><div className="w-2 h-2 bg-blue-600 rounded-full mr-3"></div>Adaptación a nuevos componentes</li>
+              </ul>
+              <Link to="/firmware-mod" className="e-btn-primary">
+                <Settings className="mr-2 h-5 w-5" />
+                Solicitar servicio
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cómo trabajamos (timeline) */}
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="e-heading text-3xl lg:text-4xl mb-4">Cómo trabajamos</h2>
@@ -402,22 +430,6 @@ export default function HomePage() {
                 <p className="text-white/70 text-sm mt-2">{s.d}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* KPI / Confianza */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="e-card p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {[{n: '5000+', l: 'Referencias en catálogo'}, {n: '98%', l: 'Clientes satisfechos'}, {n: '24h', l: 'Envío en Madrid'}, {n: '20–30m', l: 'Tiempo de preparación de archivo'}].map((k) => (
-                <div key={k.l}>
-                  <div className="text-3xl font-extrabold text-white">{k.n}</div>
-                  <div className="text-white/70 text-sm mt-1">{k.l}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
