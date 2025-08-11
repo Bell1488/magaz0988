@@ -264,72 +264,69 @@ export default function HomePage() {
 
 
 
-      {/* Каталоги Neumáticos y AdBlue */}
+      {/* Colecciones destacadas — мозаика */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="e-heading text-3xl lg:text-4xl mb-4">Nuestro Catálogo</h2>
-            <p className="e-subtle text-xl">Neumáticos y componentes AdBlue para su vehículo</p>
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <div className="e-badge mb-3">Colecciones destacadas</div>
+              <h2 className="e-heading text-3xl lg:text-4xl">Encuentre lo que necesita</h2>
+            </div>
+            <Link to="/catalog" className="hidden md:inline-flex e-btn-primary">Ver todo el catálogo</Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Neumáticos */}
-            <Link
-              to="/category/tires"
-              className="group e-card overflow-hidden"
-            >
-              <div className="relative h-64">
+          <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-6">
+            {/* Reparación (высокая карточка) */}
+            <Link to="/category/repair" className="group e-card overflow-hidden md:row-span-2 order-3 md:order-1">
+              <div className="relative h-64 md:h-full">
                 <img
-                  src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                  alt="Servicio de Reparación"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2">Servicio de Reparación</h3>
+                  <p className="text-white/80">ECU/TCM y módulos electrónicos. Diagnóstico, reparación, pruebas.</p>
+                </div>
+              </div>
+            </Link>
+
+            {/* Neumáticos */}
+            <Link to="/category/tires" className="group e-card overflow-hidden order-1">
+              <div className="relative h-60">
+                <img
+                  src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1200"
                   alt="Neumáticos"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">Neumáticos</h3>
-                  <p className="text-white/70">Neumáticos de verano, invierno y todo tiempo</p>
-                </div>
-              </div>
-              <div className="p-6">
-                <p className="e-subtle mb-4">
-                  Amplia selección de neumáticos para todas las estaciones y condiciones. 
-                  Desde opciones económicas hasta neumáticos premium.
-                </p>
-                <div className="flex items-center text-sky-400 font-semibold">
-                  Ir al catálogo
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-5 left-5 text-white">
+                  <h3 className="text-2xl font-bold mb-1">Neumáticos</h3>
+                  <p className="text-white/80 text-sm">Verano, invierno y todo tiempo</p>
                 </div>
               </div>
             </Link>
 
             {/* AdBlue */}
-            <Link
-              to="/category/adblue"
-              className="group e-card overflow-hidden"
-            >
-              <div className="relative h-64">
+            <Link to="/category/adblue" className="group e-card overflow-hidden order-2">
+              <div className="relative h-60">
                 <img
-                  src="https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=1200"
                   alt="Componentes AdBlue y SCR"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">Componentes AdBlue y SCR</h3>
-                  <p className="text-white/70">Sistemas de limpieza de gases de escape</p>
-                </div>
-              </div>
-              <div className="p-6">
-                <p className="e-subtle mb-4">
-                  Componentes para sistemas SCR y líquido AdBlue. 
-                  Reducción de emisiones nocivas y cumplimiento de normativas Euro 6.
-                </p>
-                <div className="flex items-center text-sky-400 font-semibold">
-                  Ir al catálogo
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-5 left-5 text-white">
+                  <h3 className="text-2xl font-bold mb-1">Componentes AdBlue y SCR</h3>
+                  <p className="text-white/80 text-sm">Inyectores, bombas, sensores y más</p>
                 </div>
               </div>
             </Link>
+          </div>
+
+          <div className="mt-6 md:hidden text-center">
+            <Link to="/catalog" className="e-btn-primary">Ver todo el catálogo</Link>
           </div>
         </div>
       </section>
@@ -396,6 +393,58 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Cómo trabajamos (timeline) */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="e-heading text-3xl lg:text-4xl mb-4">Cómo trabajamos</h2>
+            <p className="e-subtle text-lg">Proceso transparente de servicio y прошивки</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {[
+              {n: '01', t: 'Solicitud', d: 'Formulario con datos del coche y archivo (si aplica)'},
+              {n: '02', t: 'Evaluación', d: 'Diagnóstico técnico y confirmación de viabilidad'},
+              {n: '03', t: 'Pago', d: 'Enlace de pago seguro y emisión de orden'},
+              {n: '04', t: 'Trabajo', d: 'Reparación/modificación 20–30 min tras confirmación'},
+              {n: '05', t: 'Entrega', d: 'Archivo/envío listo por email o descarga'},
+            ].map((s) => (
+              <div key={s.n} className="e-card p-6">
+                <div className="text-sky-400 font-bold">{s.n}</div>
+                <h3 className="text-white font-semibold mt-2">{s.t}</h3>
+                <p className="text-white/70 text-sm mt-2">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* KPI / Confianza */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="e-card p-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              {[{n: '5000+', l: 'Referencias en catálogo'}, {n: '98%', l: 'Clientes satisfechos'}, {n: '24h', l: 'Envío en Madrid'}, {n: '20–30m', l: 'Tiempo de preparación de archivo'}].map((k) => (
+                <div key={k.l}>
+                  <div className="text-3xl font-extrabold text-white">{k.n}</div>
+                  <div className="text-white/70 text-sm mt-1">{k.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Marcas */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {['Mercedes-Benz', 'BMW', 'Audi', 'Toyota', 'Lexus', 'Seat', 'Bosch', 'Varta', 'MANN'].map((b) => (
+              <span key={b} className="e-badge">{b}</span>
+            ))}
           </div>
         </div>
       </section>
