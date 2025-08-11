@@ -275,7 +275,7 @@ export default function HomePage() {
             {/* Reparación */}
             <Link to="/category/repair" className="group e-card overflow-hidden order-1">
               <div className="relative h-60">
-                <img src="/diagnostic.png" alt="Servicio de Reparación" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <img src="/deagnostic.png" alt="Servicio de Reparación" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 text-white">
                   <h3 className="text-2xl font-bold mb-1">Servicio de Reparación</h3>
