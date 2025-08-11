@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User, Star, Truck, Shield, Clock } from 'lucide-react';
+import RepairRequestModal from '../components/RepairRequestModal';
 
 // Компонент поп-апа для заявки на ремонт
 function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -549,18 +550,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Поп-ап para la solicitud de reparación */}
-      {/* Стеклянная версия модалки для главной */}
-      {isRepairModalOpen && (
-        <div className="fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setIsRepairModalOpen(false)} />
-          <div className="relative z-10 max-w-2xl mx-auto p-4">
-            <div className="e-card">
-              <RepairModal isOpen={isRepairModalOpen} onClose={() => setIsRepairModalOpen(false)} />
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Поп-ап: единый компонент модалки ремонта */}
+      <RepairRequestModal isOpen={isRepairModalOpen} onClose={() => setIsRepairModalOpen(false)} />
     </div>
   );
 }
