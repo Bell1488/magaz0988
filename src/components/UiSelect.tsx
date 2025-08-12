@@ -47,7 +47,7 @@ export default function UiSelect({ value, onChange, options, placeholder = 'Sele
         </svg>
       </button>
       {open && (
-        <div className="absolute z-20 mt-2 w-full e-card p-1 max-h-60 overflow-auto">
+        <div className="absolute z-20 mt-2 w-full rounded-xl border border-white/15 bg-white/20 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.25)] p-1 max-h-60 overflow-auto e-soft-pulse">
           {options.length === 0 ? (
             <div className="px-3 py-2 text-sm text-white/60">No hay opciones</div>
           ) : (
@@ -57,7 +57,7 @@ export default function UiSelect({ value, onChange, options, placeholder = 'Sele
                   <button
                     type="button"
                     onClick={() => handleSelect(opt.id)}
-                    className={`w-full text-left px-3 py-2 rounded hover:bg-white/10 ${opt.id === value ? 'text-sky-400' : 'text-white'}`}
+                    className={`w-full text-left px-3 py-2 rounded hover:bg-white/25 ${opt.id === value ? 'text-sky-300' : 'text-white'}`}
                   >
                     {opt.name}
                   </button>

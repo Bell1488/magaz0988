@@ -40,3 +40,27 @@ body {
 .e-subtle {
   @apply text-white/70;
 }
+
+/* Subtle background pulsation overlay */
+.e-soft-pulse {
+  position: relative;
+  overflow: hidden;
+}
+
+.e-soft-pulse::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255,255,255,0.12), transparent 60%),
+    radial-gradient(120% 80% at 80% 100%, rgba(255,255,255,0.10), transparent 60%);
+  opacity: 0.04;
+  animation: e-soft-pulse 8s ease-in-out infinite;
+}
+
+@keyframes e-soft-pulse {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.10; }
+}
