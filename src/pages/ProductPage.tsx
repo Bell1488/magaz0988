@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Star, ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw } from 'lucide-react';
 import RepairRequestModal from '../components/RepairRequestModal';
 import { useCart } from '../context/CartContext';
+import { Helmet } from 'react-helmet-async';
 
 export default function ProductPage() {
   const { productId } = useParams();
@@ -78,6 +79,15 @@ export default function ProductPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{`${product.name} — ${product.brand} | ElatNeo`}</title>
+        <meta name="description" content={product.description} />
+        <link rel="canonical" href={`https://elatneo.com/product/${product.id}`} />
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={`${product.name} — ${product.brand}`} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.images && product.images.length ? product.images[0] : product.image} />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav className="text-sm text-white/60 mb-8">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Upload, Send, FileText, Clock, CreditCard, CheckCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import UiSelect from '../components/UiSelect';
 
 const carBrands = [
@@ -197,6 +198,11 @@ export default function FirmwareModPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Modificación de Firmware — ElatNeo | Precio base 250€ + opciones</title>
+        <meta name="description" content="Servicio de modificación de firmware para ECU/TCU: potencia, consumo, limitadores, EGR/DPF, AdBlue. Precio base 250€ y opciones adicionales." />
+        <link rel="canonical" href="https://elatneo.com/firmware-mod" />
+      </Helmet>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="e-heading text-3xl mb-4">Modificación de Firmware</h1>

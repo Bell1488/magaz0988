@@ -4,6 +4,7 @@ import { Filter, SlidersHorizontal, Star, ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CategoryFilters from '../components/CategoryFilters';
 import RepairRequestModal from '../components/RepairRequestModal';
+import { Helmet } from 'react-helmet-async';
 
 // Названия категорий
 const categoryNames: Record<string, string> = {
@@ -131,6 +132,11 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>{`${categoryName} — ElatNeo`}</title>
+        <meta name="description" content={`Compra en ElatNeo: ${categoryName}. Envíos rápidos, garantía y soporte técnico.`} />
+        <link rel="canonical" href={`https://elatneo.com/category/${categoryId}`} />
+      </Helmet>
       {/* Header */}
       <div className="backdrop-blur-xl bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

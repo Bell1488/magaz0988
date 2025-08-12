@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User, Star, Truck, Shield, Clock } from 'lucide-react';
 import RepairRequestModal from '../components/RepairRequestModal';
@@ -227,6 +228,17 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[radial-gradient(1200px_600px_at_10%_-10%,rgba(59,130,246,0.25),transparent),radial-gradient(800px_400px_at_90%_10%,rgba(14,165,233,0.25),transparent)]">
+      <Helmet>
+        <title>ElatNeo — Recambios y servicio técnico: Neumáticos, AdBlue, Reparación electrónica</title>
+        <meta name="description" content="ElatNeo: tienda y taller en Alicante. Neumáticos, componentes AdBlue/SCR y reparación de ECUs/TCMs. Modificación de firmware profesional. Envíos en toda España." />
+        <link rel="canonical" href="https://elatneo.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="ElatNeo — Recambios y servicio técnico" />
+        <meta property="og:description" content="Neumáticos, AdBlue y reparación electrónica. Modificación de firmware. Envío rápido y soporte técnico." />
+        <meta property="og:image" content="/mainpage.png" />
+        <meta property="og:url" content="https://elatneo.com/" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative">
         <div className="absolute inset-0 -z-10 opacity-30 bg-[radial-gradient(1000px_300px_at_50%_0%,rgba(255,255,255,0.15),transparent)]" />

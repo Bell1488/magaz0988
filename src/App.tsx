@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
+import { HelmetProvider } from 'react-helmet-async';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import CatalogPage from './pages/CatalogPage';
@@ -24,7 +25,8 @@ function App() {
   const isAdminPage = window.location.pathname === '/admin';
   
   return (
-    <CartProvider>
+    <HelmetProvider>
+      <CartProvider>
       <Router>
         <div className="min-h-screen">
           {!isAdminPage && <Header />}
@@ -50,7 +52,8 @@ function App() {
           {!isAdminPage && <Footer />}
         </div>
       </Router>
-    </CartProvider>
+      </CartProvider>
+    </HelmetProvider>
   );
 }
 

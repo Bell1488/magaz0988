@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 interface BlogPost {
   id: string;
@@ -73,6 +74,15 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Helmet>
+        <title>{`${post.title} — Blog ElatNeo`}</title>
+        <meta name="description" content={post.description} />
+        <link rel="canonical" href={`https://elatneo.com/blog/${post.id}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.description} />
+        <meta property="og:image" content={post.image && post.image.startsWith('/uploads') ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${post.image}` : post.image} />
+      </Helmet>
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

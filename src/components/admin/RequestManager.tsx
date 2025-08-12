@@ -15,6 +15,8 @@ interface FirmwareRequest {
   engineType: string;
   ecuType: string;
   description: string;
+  options?: Record<string, boolean>;
+  totalPrice?: number;
   fileUrl?: string;
   fileName?: string;
   status: 'new' | 'processing' | 'completed' | 'rejected';
@@ -169,6 +171,22 @@ export default function RequestManager() {
                     <h3 className="text-sm font-medium text-gray-500 mb-1">Описание проблемы</h3>
                     <p className="text-gray-900 whitespace-pre-wrap">{request.description}</p>
                   </div>
+
+                  {(request.options || request.totalPrice) && (
+                    <div className="mb-4">
+                      <h3 className="text-sm font-medium text-gray-500 mb-2">Опции прошивки</h3>
+                      {request.options && (
+                        <ul className="list-disc ml-6 text-gray-900">
+                          {Object.entries(request.options).filter(([,v])=>v).map(([k]) => (
+                            <li key={k}>{k}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {request.totalPrice && (
+                        <p className="mt-2 text-gray-900 font-semibold">Итого: €{request.totalPrice}</p>
+                      )}
+                    </div>
+                  )}
                   
                   {request.fileUrl && (
                     <div className="mb-4">

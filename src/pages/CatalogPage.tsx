@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 interface Category {
   id: string;
@@ -60,6 +61,11 @@ export default function CatalogPage() {
 
   return (
     <div className="min-h-screen bg-transparent">
+      <Helmet>
+        <title>Catálogo de Productos — ElatNeo: Neumáticos y Componentes AdBlue/SCR</title>
+        <meta name="description" content="Explore el catálogo de ElatNeo: neumáticos para todas las estaciones y componentes AdBlue/SCR con envío rápido por toda España." />
+        <link rel="canonical" href="https://elatneo.com/catalog" />
+      </Helmet>
       {/* Header */}
       <div className="backdrop-blur-xl bg-white/5 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

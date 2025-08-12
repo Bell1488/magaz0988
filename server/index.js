@@ -398,6 +398,10 @@ app.post('/api/firmware-requests', upload.single('file'), (req, res) => {
       engineType: req.body.engineType,
       ecuType: req.body.ecuType,
       description: req.body.description,
+      options: (() => {
+        try { return req.body.options ? JSON.parse(req.body.options) : {}; } catch { return {}; }
+      })(),
+      totalPrice: req.body.totalPrice ? Number(req.body.totalPrice) : undefined,
       status: 'new'
     };
     

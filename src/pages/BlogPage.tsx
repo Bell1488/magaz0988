@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 interface BlogPost {
   id: string;
@@ -65,6 +66,11 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Helmet>
+        <title>Blog — ElatNeo</title>
+        <meta name="description" content="Noticias, guías y consejos sobre recambios, AdBlue/SCR y electrónica de automoción en ElatNeo." />
+        <link rel="canonical" href="https://elatneo.com/blog" />
+      </Helmet>
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
