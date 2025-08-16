@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const { restoreFromBackup, createBackup } = require('./data-backup');
 
 // Инициализация приложения Express
 const app = express();
@@ -111,26 +112,50 @@ const writeData = (file, data) => {
   }
 };
 
-// Проверяем и инициализируем файлы с данными
-if (!fs.existsSync(productsFile)) {
-  writeData(productsFile, initialProducts);
+// Функция для инициализации данных
+function initializeData() {
+  console.log('🔄 Инициализация данных...');
+  
+  // Проверяем, есть ли существующие данные
+  const hasExistingData = fs.existsSync(productsFile) || 
+                         fs.existsSync(categoriesFile) || 
+                         fs.existsSync(ordersFile);
+  
+  if (!hasExistingData) {
+    console.log('📦 Существующие данные не найдены, пытаемся восстановить из резервной копии...');
+    const restored = restoreFromBackup();
+    
+    if (restored) {
+      console.log('✅ Данные успешно восстановлены из резервной копии');
+    } else {
+      console.log('⚠️ Резервная копия не найдена, создаем начальные данные...');
+      // Создаем начальные данные только если нет существующих и нет резервной копии
+      if (!fs.existsSync(productsFile)) {
+        writeData(productsFile, initialProducts);
+      }
+      if (!fs.existsSync(categoriesFile)) {
+        writeData(categoriesFile, initialCategories);
+      }
+      if (!fs.existsSync(ordersFile)) {
+        writeData(ordersFile, initialOrders);
+      }
+      if (!fs.existsSync(firmwareRequestsFile)) {
+        writeData(firmwareRequestsFile, initialFirmwareRequests);
+      }
+      if (!fs.existsSync(repairRequestsFile)) {
+        writeData(repairRequestsFile, initialRepairRequests);
+      }
+      if (!fs.existsSync(blogPostsFile)) {
+        writeData(blogPostsFile, initialBlogPosts);
+      }
+    }
+  } else {
+    console.log('✅ Существующие данные найдены');
+  }
 }
 
-if (!fs.existsSync(categoriesFile)) {
-  writeData(categoriesFile, initialCategories);
-}
-
-if (!fs.existsSync(ordersFile)) {
-  writeData(ordersFile, initialOrders);
-}
-
-if (!fs.existsSync(firmwareRequestsFile)) {
-  writeData(firmwareRequestsFile, initialFirmwareRequests);
-}
-
-if (!fs.existsSync(blogPostsFile)) {
-  writeData(blogPostsFile, initialBlogPosts);
-}
+// Инициализируем данные при запуске
+initializeData();
 
 // Маршруты API для товаров
 app.get('/api/products', (req, res) => {
@@ -659,6 +684,42 @@ app.delete('/api/blog-posts/:id', (req, res) => {
     res.json(deletedPost);
   } else {
     res.status(500).send('Error al eliminar el artículo');
+  }
+});
+
+// API эндпоинты для управления резервными копиями
+app.post('/api/backup', (req, res) => {
+  try {
+    createBackup();
+    res.json({ message: 'Резервная копия создана успешно' });
+  } catch (error) {
+    console.error('Error creating backup:', error);
+    res.status(500).json({ error: 'Ошибка при создании резервной копии' });
+  }
+});
+
+app.post('/api/backup/restore', (req, res) => {
+  try {
+    const restored = restoreFromBackup();
+    if (restored) {
+      res.json({ message: 'Данные восстановлены из резервной копии' });
+    } else {
+      res.status(404).json({ error: 'Резервная копия не найдена' });
+    }
+  } catch (error) {
+    console.error('Error restoring backup:', error);
+    res.status(500).json({ error: 'Ошибка при восстановлении данных' });
+  }
+});
+
+app.get('/api/backup/list', (req, res) => {
+  try {
+    const { getBackups } = require('./data-backup');
+    const backups = getBackups();
+    res.json({ backups });
+  } catch (error) {
+    console.error('Error listing backups:', error);
+    res.status(500).json({ error: 'Ошибка при получении списка резервных копий' });
   }
 });
 

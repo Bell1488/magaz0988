@@ -36,9 +36,10 @@ export function TabsList({ children }: TabsListProps) {
 interface TabsTriggerProps {
   value: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export function TabsTrigger({ value, children }: TabsTriggerProps) {
+export function TabsTrigger({ value, children, className = '' }: TabsTriggerProps) {
   const context = useContext(TabsContext);
   
   if (!context) {
@@ -49,11 +50,11 @@ export function TabsTrigger({ value, children }: TabsTriggerProps) {
   
   return (
     <button
-      className={`px-4 py-2 font-medium text-sm transition-colors ${
+      className={`px-4 py-2 font-medium text-sm transition-colors relative ${
         isActive
           ? 'text-blue-600 border-b-2 border-blue-600'
           : 'text-gray-600 hover:text-gray-900'
-      }`}
+      } ${className}`}
       onClick={() => context.onValueChange(value)}
     >
       {children}

@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "backup": "node scripts/pre-deploy.js",
+    "backup:create": "node server/data-backup.js backup",
+    "backup:restore": "node server/data-backup.js restore",
+    "backup:list": "node server/data-backup.js list"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
