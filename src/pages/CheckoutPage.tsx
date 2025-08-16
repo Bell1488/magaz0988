@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CreditCard, Truck, MapPin, Phone, Mail, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { getApiUrl } from '../utils/api';
 
 export default function CheckoutPage() {
   const { state } = useCart();
@@ -44,7 +45,7 @@ export default function CheckoutPage() {
       };
       
       // Отправляем заказ на сервер
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`, {
+      const response = await fetch(`${getApiUrl()}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

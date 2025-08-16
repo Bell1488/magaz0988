@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, Upload, Phone, Mail, User, Wrench } from 'lucide-react';
+import { getApiUrl } from '../utils/api';
 
 interface RepairRequestModalProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ export default function RepairRequestModal({ isOpen, onClose, defaultPartName }:
       formDataToSend.append('description', formData.description);
       formData.images.forEach((image) => formDataToSend.append('images', image));
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`, {
+      const response = await fetch(`${getApiUrl()}/api/repair-requests`, {
         method: 'POST',
         body: formDataToSend
       });

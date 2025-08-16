@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Eye, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { getApiUrl } from '../../utils/api';
 
 interface RepairRequest {
   id: string;
@@ -30,7 +31,7 @@ export default function RepairManager() {
 
   const fetchRequests = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`);
+      const response = await fetch(`${getApiUrl()}/api/repair-requests`);
       if (response.ok) {
         const data = await response.json();
         setRequests(data);
@@ -49,7 +50,7 @@ export default function RepairManager() {
 
       const updatedRequest = { ...request, status, isNew: false };
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests/${id}`, {
+      const response = await fetch(`${getApiUrl()}/api/repair-requests/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

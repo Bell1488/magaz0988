@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Eye, Calendar, Clock } from 'lucide-react';
+import { getApiUrl } from '../../utils/api';
 
 interface BlogPost {
   id: string;
@@ -34,7 +35,7 @@ export default function BlogManager() {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blog-posts`);
+      const response = await fetch(`${getApiUrl()}/api/blog-posts`);
       if (response.ok) {
         const data = await response.json();
         setPosts(data);
@@ -68,8 +69,8 @@ export default function BlogManager() {
       }
 
       const url = editingPost 
-        ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blog-posts/${editingPost.id}`
-        : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blog-posts`;
+        ? `${getApiUrl()}/api/blog-posts/${editingPost.id}`
+        : `${getApiUrl()}/api/blog-posts`;
       
       const method = editingPost ? 'PUT' : 'POST';
 
@@ -106,7 +107,7 @@ export default function BlogManager() {
   const handleDelete = async (id: string) => {
     if (window.confirm('¿Está seguro de que desea eliminar este artículo?')) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blog-posts/${id}`, {
+        const response = await fetch(`${getApiUrl()}/api/blog-posts/${id}`, {
           method: 'DELETE'
         });
 

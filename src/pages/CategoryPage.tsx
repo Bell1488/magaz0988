@@ -4,6 +4,7 @@ import { Filter, SlidersHorizontal, Star, ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import CategoryFilters from '../components/CategoryFilters';
 import RepairRequestModal from '../components/RepairRequestModal';
+import { getApiUrl } from '../utils/api';
 import { Helmet } from 'react-helmet-async';
 
 // Названия категорий
@@ -36,7 +37,7 @@ export default function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`;
+    const apiUrl = `${getApiUrl()}/api/products`;
     console.log('Fetching products from:', apiUrl);
     console.log('Category ID:', categoryId);
     

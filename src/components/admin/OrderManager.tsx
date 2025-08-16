@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Check, X, ChevronDown, ChevronUp, Eye } from 'lucide-react';
+import { getApiUrl } from '../../utils/api';
 
 // Типы для заказов
 interface OrderItem {
@@ -91,7 +92,7 @@ export default function OrderManager() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`);
+        const response = await fetch(`${getApiUrl()}/api/orders`);
         if (response.ok) {
           const data = await response.json();
           setOrders(data);
@@ -125,7 +126,7 @@ export default function OrderManager() {
       
       const updatedOrder = { ...orderToUpdate, status: newStatus };
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders/${orderId}`, {
+              const response = await fetch(`${getApiUrl()}/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

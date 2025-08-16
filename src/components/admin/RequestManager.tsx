@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Eye, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { getApiUrl } from '../../utils/api';
 import { api } from '../../utils/api';
 
 // Типы для заявок
@@ -192,12 +193,12 @@ export default function RequestManager() {
                     <div className="mb-4">
                       <h3 className="text-sm font-medium text-gray-500 mb-1">Файл прошивки</h3>
                       <div className="flex items-center">
-                        <a 
-                          href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${request.fileUrl}`} 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-blue-600 hover:underline"
-                        >
+                                        <a
+                  href={`${getApiUrl()}${request.fileUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-blue-600 hover:underline"
+                >
                           <Download className="h-4 w-4 mr-1" />
                           {request.fileName || 'Скачать файл'}
                           <ExternalLink className="h-3 w-3 ml-1" />

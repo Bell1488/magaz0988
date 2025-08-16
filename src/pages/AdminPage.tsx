@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/admin/Tabs';
+import { getApiUrl } from '../utils/api';
 import ProductManager from '../components/admin/ProductManager';
 import CategoryManager from '../components/admin/CategoryManager';
 import OrderManager from '../components/admin/OrderManager';
@@ -35,7 +36,7 @@ export default function AdminPage() {
 
       try {
         // Загрузка новых заказов
-        const ordersResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`);
+        const ordersResponse = await fetch(`${getApiUrl()}/api/orders`);
         if (ordersResponse.ok) {
           const orders = await ordersResponse.json();
           const newOrdersCount = orders.filter(order => order.status === 'pending' && !localStorage.getItem(`viewed_order_${order.id}`)).length;
@@ -43,7 +44,7 @@ export default function AdminPage() {
         }
 
         // Загрузка новых заявок на прошивку
-        const requestsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`);
+        const requestsResponse = await fetch(`${getApiUrl()}/api/firmware-requests`);
         if (requestsResponse.ok) {
           const requests = await requestsResponse.json();
           const newRequestsCount = requests.filter(request => request.status === 'new' && !localStorage.getItem(`viewed_request_${request.id}`)).length;
@@ -51,7 +52,7 @@ export default function AdminPage() {
         }
 
         // Загрузка новых заявок на ремонт
-        const repairsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`);
+        const repairsResponse = await fetch(`${getApiUrl()}/api/repair-requests`);
         if (repairsResponse.ok) {
           const repairs = await repairsResponse.json();
           const newRepairsCount = repairs.filter(repair => repair.isNew && !localStorage.getItem(`viewed_repair_${repair.id}`)).length;
@@ -75,7 +76,7 @@ export default function AdminPage() {
     
     // Отмечаем заказы как просмотренные при переходе на вкладку заказов
     if (value === 'orders' && newOrders > 0) {
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orders`)
+              fetch(`${getApiUrl()}/api/orders`)
         .then(response => response.json())
         .then(orders => {
           orders.forEach(order => {
@@ -90,7 +91,7 @@ export default function AdminPage() {
     
     // Отмечаем заявки как просмотренные при переходе на вкладку заявок
     if (value === 'requests' && newRequests > 0) {
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`)
+              fetch(`${getApiUrl()}/api/firmware-requests`)
         .then(response => response.json())
         .then(requests => {
           requests.forEach(request => {
@@ -105,7 +106,7 @@ export default function AdminPage() {
     
     // Отмечаем заявки на ремонт как просмотренные при переходе на вкладку ремонтов
     if (value === 'repairs' && newRepairs > 0) {
-      fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`)
+              fetch(`${getApiUrl()}/api/repair-requests`)
         .then(response => response.json())
         .then(repairs => {
           repairs.forEach(repair => {

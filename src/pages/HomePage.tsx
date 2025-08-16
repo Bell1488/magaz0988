@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Wrench, Settings, X, Upload, Phone, Mail, User, Star, Truck, Shield, Clock } from 'lucide-react';
 import RepairRequestModal from '../components/RepairRequestModal';
+import { getApiUrl } from '../utils/api';
 
 // Компонент поп-апа для заявки на ремонт
 function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
@@ -32,7 +33,7 @@ function RepairModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
         formDataToSend.append(`images`, image);
       });
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/repair-requests`, {
+      const response = await fetch(`${getApiUrl()}/api/repair-requests`, {
         method: 'POST',
         body: formDataToSend
       });
@@ -215,7 +216,7 @@ export default function HomePage() {
   useEffect(() => {
     const loadRepairProducts = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products`);
+        const res = await fetch(`${getApiUrl()}/api/products`);
         const data = await res.json();
         const repairs = data.filter((p: any) => p.category === 'repair').slice(0, 4);
         setRepairProducts(repairs);

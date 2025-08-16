@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Pencil, Trash2, Save, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Pencil, Trash2, Save, X, Upload } from 'lucide-react';
+import { getApiUrl } from '../../utils/api';
 
 // Типы для категорий
 interface Category {
@@ -46,6 +47,8 @@ export default function CategoryManager() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Новая категория по умолчанию
   const defaultNewCategory: Category = {
@@ -60,7 +63,7 @@ export default function CategoryManager() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories`);
+        const response = await fetch(`${getApiUrl()}/api/categories`);
         if (response.ok) {
           const data = await response.json();
           setCategories(data);
@@ -91,7 +94,7 @@ export default function CategoryManager() {
   const handleDelete = async (id: string) => {
     if (window.confirm('¿Está seguro de que desea eliminar esta categoría?')) {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories/${id}`, {
+        const response = await fetch(`${getApiUrl()}/api/categories/${id}`, {
           method: 'DELETE',
         });
         
@@ -116,7 +119,7 @@ export default function CategoryManager() {
       
       if (isAdding) {
         // Создание новой категории
-        response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories`, {
+        response = await fetch(`${getApiUrl()}/api/categories`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -125,7 +128,7 @@ export default function CategoryManager() {
         });
       } else {
         // Обновление существующей категории
-        response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/categories/${editingCategory.id}`, {
+        response = await fetch(`${getApiUrl()}/api/categories/${editingCategory.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -169,6 +172,43 @@ export default function CategoryManager() {
       setEditingCategory({ ...editingCategory, [name]: parseInt(value) || 0 });
     } else {
       setEditingCategory({ ...editingCategory, [name]: value });
+    }
+  };
+
+  // Обработчик загрузки изображения
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0 || !editingCategory) return;
+    
+    try {
+      setIsUploading(true);
+      
+      const formData = new FormData();
+      formData.append('image', files[0]);
+      
+      const response = await fetch(`${getApiUrl()}/api/categories/upload-image`, {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error uploading image');
+      }
+      
+      const data = await response.json();
+      const imageUrl = `${getApiUrl()}${data.url}`;
+      
+      setEditingCategory({ ...editingCategory, image: imageUrl });
+      
+      // Очищаем input для возможности повторной загрузки того же файла
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error al subir la imagen');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -237,13 +277,59 @@ export default function CategoryManager() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 URL изображения
               </label>
-              <input
-                type="text"
-                name="image"
-                value={editingCategory.image}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  name="image"
+                  value={editingCategory.image}
+                  onChange={handleChange}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+                  disabled={isUploading}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {isUploading ? 'Загрузка...' : 'Загрузить'}
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+              </div>
+              <p className="text-xs text-gray-500 mt-1">Загрузите изображение или введите URL вручную</p>
+              
+              {/* Предварительный просмотр изображения */}
+              {editingCategory.image && (
+                <div className="mt-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Предварительный просмотр
+                  </label>
+                  <div className="relative w-32 h-32 border border-gray-300 rounded-lg overflow-hidden">
+                    <img 
+                      src={editingCategory.image} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const nextElement = target.nextElementSibling as HTMLElement;
+                        if (nextElement) {
+                          nextElement.style.display = 'flex';
+                        }
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-500 text-sm hidden">
+                      Ошибка загрузки
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             <div>

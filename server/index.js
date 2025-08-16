@@ -170,6 +170,27 @@ const uploadProductImage = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
+// Настройка загрузки изображений категорий
+const categoryImageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const categoryImagesDir = path.join(uploadsDir, 'categories');
+    if (!fs.existsSync(categoryImagesDir)) {
+      fs.mkdirSync(categoryImagesDir, { recursive: true });
+    }
+    cb(null, categoryImagesDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, 'category-' + uniqueSuffix + ext);
+  }
+});
+
+const uploadCategoryImage = multer({ 
+  storage: categoryImageStorage,
+  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
+
 // Загрузка изображения товара
 app.post('/api/products/upload-image', uploadProductImage.single('image'), (req, res) => {
   if (!req.file) {
@@ -178,6 +199,17 @@ app.post('/api/products/upload-image', uploadProductImage.single('image'), (req,
   
   // Возвращаем URL загруженного файла
   const imageUrl = `/uploads/products/${req.file.filename}`;
+  res.json({ url: imageUrl });
+});
+
+// Загрузка изображения категории
+app.post('/api/categories/upload-image', uploadCategoryImage.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded');
+  }
+  
+  // Возвращаем URL загруженного файла
+  const imageUrl = `/uploads/categories/${req.file.filename}`;
   res.json({ url: imageUrl });
 });
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Send, FileText, Clock, CreditCard, CheckCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import UiSelect from '../components/UiSelect';
+import { getApiUrl } from '../utils/api';
 
 const carBrands = [
   { id: 'mercedes', name: 'Mercedes-Benz' },
@@ -154,7 +155,7 @@ export default function FirmwareModPage() {
       }
       
       // Отправляем данные на сервер
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/firmware-requests`, {
+      const response = await fetch(`${getApiUrl()}/api/firmware-requests`, {
         method: 'POST',
         body: formData
       });

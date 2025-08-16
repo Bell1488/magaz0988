@@ -2,13 +2,12 @@
 
 // Базовый URL API
 const getApiBaseUrl = () => {
-  // Приоритет:
-  // 1. Переменная окружения VITE_API_URL (если задана)
-  // 2. В продакшене - URL развернутого бэкенда
-  // 3. В разработке - локальный сервер
-  return import.meta.env.VITE_API_URL || 
-    (import.meta.env.PROD ? 'https://elatneo-api.onrender.com' : 'http://localhost:5000');
+  // В продакшене используем Render API, в разработке - локальный сервер
+  return import.meta.env.PROD ? 'https://magaz0988.onrender.com' : 'http://localhost:5000';
 };
+
+// Экспортируем функцию для использования в других файлах
+export const getApiUrl = () => getApiBaseUrl();
 
 // Функция для выполнения запросов к API
 export const fetchApi = async (endpoint: string, options = {}) => {

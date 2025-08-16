@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Pencil, Trash2, Save, X, Search, Upload } from 'lucide-react';
 import { api } from '../../utils/api';
+import { getApiUrl } from '../../utils/api';
 
 // Типы для продуктов
 interface Product {
@@ -192,7 +193,7 @@ export default function ProductManager() {
       const formData = new FormData();
       formData.append('image', files[0]);
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products/upload-image`, {
+              const response = await fetch(`${getApiUrl()}/api/products/upload-image`, {
         method: 'POST',
         body: formData
       });
@@ -202,7 +203,7 @@ export default function ProductManager() {
       }
       
       const data = await response.json();
-      const imageUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${data.url}`;
+              const imageUrl = `${getApiUrl()}${data.url}`;
       
       // Если это первое изображение, устанавливаем его как основное
       if (!editingProduct.image) {

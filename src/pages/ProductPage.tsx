@@ -4,6 +4,7 @@ import { Star, ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw } from 'luc
 import RepairRequestModal from '../components/RepairRequestModal';
 import { useCart } from '../context/CartContext';
 import { Helmet } from 'react-helmet-async';
+import { getApiUrl } from '../utils/api';
 
 export default function ProductPage() {
   const { productId } = useParams();
@@ -17,7 +18,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/products/${productId}`)
+          fetch(`${getApiUrl()}/api/products/${productId}`)
       .then(res => res.json())
       .then(data => {
         setProduct(data);

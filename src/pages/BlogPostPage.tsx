@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { getApiUrl } from '../utils/api';
 
 interface BlogPost {
   id: string;
@@ -26,7 +27,7 @@ export default function BlogPostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blog-posts/${id}`);
+      const response = await fetch(`${getApiUrl()}/api/blog-posts/${id}`);
       if (response.ok) {
         const data = await response.json();
         setPost(data);
